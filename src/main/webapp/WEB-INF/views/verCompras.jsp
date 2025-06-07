@@ -7,7 +7,10 @@
 <jsp:include page="includes/head.jsp"/>
 
 <body>
-<header>
+    <jsp:include page="includes/header.jsp" />
+
+<!-- 
+    <header>
     <div class="container">
         <div class="row">
             <div class="col-4">
@@ -48,6 +51,8 @@
         </div>
     </div>
 </header>
+-->
+
 <h2>Mis Compras</h2>
 <% List<Venta> ventas = (List<Venta>) request.getAttribute("ventas"); %>
 <% if (ventas != null && !ventas.isEmpty()) { %>
@@ -56,7 +61,7 @@
             <tr>
                 <th>ID Venta</th>
                 <th>Fecha</th>
-                <th>Total</th>
+                <th>Total</th> 
                 <th>Detalles</th>
             </tr>
         </thead>

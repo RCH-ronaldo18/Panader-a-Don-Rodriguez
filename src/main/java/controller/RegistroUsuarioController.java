@@ -9,7 +9,6 @@ import model.Cliente;
 import model.Usuario;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -17,18 +16,24 @@ import dao.ClienteDAO;
 import dao.UsuarioDAO;
 
 @WebServlet("/registro")
-//registro por parte del cliente 
+// registro por parte del cliente 
 public class RegistroUsuarioController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Solo mostramos modal si exito=true en la URL
+    //   String exito = request.getParameter("exito");
+      //  if ("true".equals(exito)) {
+        //    request.setAttribute("registroExitoso", true);
+        //}
         request.getRequestDispatcher("/WEB-INF/views/registro.jsp").forward(request, response);
-    }
+    } 
+    
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	  // Obtener datos del formulario de usuario
-        String correoUsuario = request.getParameter("correoUsuario"); // Asegúrate de que este sea el campo correcto
+        // Obtener datos del formulario de usuario
+        String correoUsuario = request.getParameter("correoUsuario");
         String contrasena = request.getParameter("contrasena");
 
         // Obtener datos del formulario de cliente
@@ -42,7 +47,6 @@ public class RegistroUsuarioController extends HttpServlet {
             nombre == null || nombre.isEmpty() || 
             direccion == null || direccion.isEmpty() || 
             telefono == null || telefono.isEmpty()) {
-            
             request.setAttribute("error", "Todos los campos son obligatorios.");
             request.getRequestDispatcher("/WEB-INF/views/registro.jsp").forward(request, response);
             return;
@@ -60,9 +64,9 @@ public class RegistroUsuarioController extends HttpServlet {
         String contrasenaEncriptada = encriptarContrasena(contrasena);
 
         // Crear objeto Usuario
-        Usuario usuario = new Usuario(0, correoUsuario, contrasenaEncriptada, 3); // id_usuario y rol '3' para 'usuario' por defecto
+        Usuario usuario = new Usuario(0, correoUsuario, contrasenaEncriptada, 3); // rol '3' para 'usuario' por defecto
 
-        try {
+        try { 
             // Registrar usuario
             int idUsuarioGenerado = usuarioDAO.registrarUsuarioYRetornarId(usuario);
 
@@ -71,8 +75,9 @@ public class RegistroUsuarioController extends HttpServlet {
                 Cliente cliente = new Cliente(0, nombre, direccion, telefono, idUsuarioGenerado);
                 ClienteDAO clienteDAO = new ClienteDAO();
                 if (clienteDAO.registrarCliente(cliente)) {
-                    // Registro exitoso, redirigir a página de éxito
-                    request.getRequestDispatcher("/WEB-INF/views/registroExito.jsp").forward(request, response);
+                    // Redirigir con parámetro de éxito
+                    request.getSession().setAttribute("registroExitoso", true);
+                    response.sendRedirect("registro");
                 } else {
                     request.setAttribute("error", "Error al registrar los datos del cliente.");
                     request.getRequestDispatcher("/WEB-INF/views/registro.jsp").forward(request, response);

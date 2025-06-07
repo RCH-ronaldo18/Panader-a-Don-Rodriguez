@@ -1,3 +1,4 @@
+<!--
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -8,10 +9,12 @@
 </head>
 <body>
 Venta registrada con exito
-<!-- Botón para ver las compras realizadas -->
+
+Botón para ver las compras realizadas 
 <div class="text-center mt-4">
     <a href="${pageContext.request.contextPath}/verCompras" class="btn btn-primary">Ver Compras</a>
 </div>
 
 </body>
-</html>
+</html> 
+-->

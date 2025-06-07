@@ -78,4 +78,25 @@ public class UsuarioDAO {
         }
         return existe;
     }
+
+
+    // Método para contar el total de usuarios registrados
+    public static int contarUsuarios() {
+        int total = 0;
+        String sql = "SELECT COUNT(*) FROM usuarios";
+
+        try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+            total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
 }
+
+
+

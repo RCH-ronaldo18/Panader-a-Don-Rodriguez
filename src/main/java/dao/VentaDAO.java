@@ -119,13 +119,13 @@ public class VentaDAO {
 
 
     // Obtener ventas por cliente
-    public List<Venta> obtenerVentasPorCliente(long idCliente) throws SQLException {
+    public List<Venta> obtenerVentasPorCliente(int idCliente) throws SQLException {
         String sql = "SELECT * FROM ventas WHERE id_cliente = ?";
         List<Venta> ventas = new ArrayList<>();
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-
+System.out.println(idCliente);
             ps.setLong(1, idCliente);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -162,7 +162,7 @@ public class VentaDAO {
                 }
             }
         }
-        return venta;
+        return venta; 
     }
 
     // Obtener detalles de una venta por su ID
@@ -214,42 +214,74 @@ public class VentaDAO {
     }
 
  // Obtener todas las ventas
-    public List<Venta> obtenerTodasLasVentas() throws SQLException {
-        String sql = "SELECT * FROM ventas";
-        List<Venta> ventas = new ArrayList<>();
+public List<Venta> obtenerTodasLasVentas() throws SQLException {
+    String sql = """
+        SELECT 
+            v.*, 
+            c.nombre AS nombre_cliente
+        FROM 
+            ventas v
+        JOIN 
+            clientes c ON v.id_cliente = c.id_cliente
+    """;
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+    List<Venta> ventas = new ArrayList<>();
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Venta venta = new Venta();
-                    venta.setIdVenta(rs.getLong("id_venta"));
-                    venta.setIdCliente(rs.getLong("id_cliente"));
-                    venta.setFechaVenta(rs.getDate("fecha_venta").toLocalDate());
-                    venta.setHoraVenta(rs.getTime("hora_venta").toLocalTime());
-                    venta.setTotal(rs.getDouble("total"));
-                    venta.setIdEstado(rs.getInt("id_estado"));
-                    ventas.add(venta);
-                }
+    try (Connection con = DatabaseConnection.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Venta venta = new Venta();
+                venta.setIdVenta(rs.getLong("id_venta"));
+                venta.setIdCliente(rs.getLong("id_cliente"));
+                venta.setFechaVenta(rs.getDate("fecha_venta").toLocalDate());
+                venta.setHoraVenta(rs.getTime("hora_venta").toLocalTime());
+                venta.setTotal(rs.getDouble("total"));
+                venta.setIdEstado(rs.getInt("id_estado"));
+                venta.setNombreCliente(rs.getString("nombre_cliente")); // Aquí sí funcionará
+                ventas.add(venta);
             }
         }
-        return ventas;
     }
+    return ventas;
+}
+
     //ACTUALIZAR ESTADO DE LA VENTA :
     public boolean actualizarEstado(long idVenta, int nuevoEstado) throws SQLException {
+        
         String sql = "UPDATE ventas SET id_estado = ? WHERE id_venta = ?";
         
+     
+
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, nuevoEstado);
             ps.setLong(2, idVenta);
-            
+            System.out.println("hh");
+
+
             int filasAfectadas = ps.executeUpdate();
+
+               System.out.println("estoy en el dao");
             return filasAfectadas > 0;
         }
     }
 
 
+    public static int contarVentas() {
+        int total = 0;
+        try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM ventas");
+            ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+            total = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
 }
 
+  

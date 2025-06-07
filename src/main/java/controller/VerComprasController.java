@@ -21,7 +21,7 @@ public class VerComprasController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	        long idCliente = (Long) request.getSession().getAttribute("idCliente");
+	        int idCliente = (int) request.getSession().getAttribute("idUsuario");
 	        VentaDAO ventaDAO = new VentaDAO();
 	        
 	        try {
@@ -36,5 +36,4 @@ public class VerComprasController extends HttpServlet {
 	            response.sendRedirect("error.jsp");
 	        }
 	    }
-
 }

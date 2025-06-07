@@ -15,4 +15,4 @@
 <jsp:include page="includes/panelAdmin.jsp" />
 <jsp:include page="includes/footer.jsp" />
 </body>
-</html>
+</html> 

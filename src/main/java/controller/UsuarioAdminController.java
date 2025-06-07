@@ -220,7 +220,7 @@ public class UsuarioAdminController extends HttpServlet {
             if (eliminado) {
 	                // Redirigir a la lista de usuarios si se elimina correctamente
                 response.sendRedirect(request.getContextPath() + "/usuarios");
-            } else {
+            } else { 
                 // Mostrar mensaje de error si la eliminación falla
                 request.setAttribute("error", "No se pudo eliminar el usuario.");
                 request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);

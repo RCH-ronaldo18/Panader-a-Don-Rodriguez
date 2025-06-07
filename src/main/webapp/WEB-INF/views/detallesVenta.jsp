@@ -7,9 +7,10 @@
 <!-- sesion para que no se pueda entrar a la vista sin autorizacion by:clever -->
 <%
 Integer userType = (Integer) session.getAttribute("idTipoUsuario");
-if (userType == null || userType != 1) {
-	response.sendRedirect(request.getContextPath() + "/login");
-	return;
+
+if (userType == null || (userType != 1 && userType != 3)) {
+    response.sendRedirect(request.getContextPath() + "/login");
+    return;
 }
 %>
 
@@ -115,9 +116,13 @@ List<DetalleVenta> detalles = ventaDAO.obtenerDetallesVenta(idVenta);
 				<%
 				}
 				%>
-		<div class="text-end">
+				<div class="text-end">
+					<% if (userType != null && userType != 3) { %>
 						<a href="${pageContext.request.contextPath}/ventas" class="btn btn-info text-black">Regresar a la lista</a>
-		</div>
+					<% } else if (userType != null && userType == 3) { %>
+						<a href="${pageContext.request.contextPath}/verCompras" class="btn btn-info text-black">Regresar a verCompras</a>
+					<% } %>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -1,112 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" version="6.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+  <!-- Servlets -->
   <servlet>
-    <description></description>
-    <display-name>ProductoController</display-name>
-    <servlet-name>ProductoController</servlet-name>
-    <servlet-class>controller.ProductoController</servlet-class>
+    <servlet-name>ActualizarEstadoVentaController</servlet-name>
+    <servlet-class>controller.ActualizarEstadoVentaController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ProductoController</servlet-name>
-    <url-pattern>/ProductoController</url-pattern>
+    <servlet-name>ActualizarEstadoVentaController</servlet-name>
+    <url-pattern>/ActualizarEstadoVentaController</url-pattern>
   </servlet-mapping>
-  <display-name>Web_donRODRIGUEZ</display-name>
-<welcome-file-list>
-    <welcome-file>InicioController</welcome-file>
-</welcome-file-list>
+
   <servlet>
-    <description></description>
-    <display-name>InicioController</display-name>
-    <servlet-name>InicioController</servlet-name>
-    <servlet-class>controller.InicioController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>InicioController</servlet-name>
-    <url-pattern>/InicioController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>DesayunoController</display-name>
-    <servlet-name>DesayunoController</servlet-name>
-    <servlet-class>controller.DesayunoController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DesayunoController</servlet-name>
-    <url-pattern>/DesayunoController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>PostresController</display-name>
-    <servlet-name>PostresController</servlet-name>
-    <servlet-class>controller.PostresController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>PostresController</servlet-name>
-    <url-pattern>/PostresController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>MiniDulcesController</display-name>
-    <servlet-name>MiniDulcesController</servlet-name>
-    <servlet-class>controller.MiniDulcesController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MiniDulcesController</servlet-name>
-    <url-pattern>/MiniDulcesController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>MiniTortas</display-name>
-    <servlet-name>MiniTortas</servlet-name>
-    <servlet-class>controller.MiniTortas</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MiniTortas</servlet-name>
-    <url-pattern>/MiniTortas</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>UsuarioController</display-name>
-    <servlet-name>UsuarioController</servlet-name>
-    <servlet-class>controller.UsuarioController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UsuarioController</servlet-name>
-    <url-pattern>/UsuarioController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>RegistroUsuarioController</display-name>
-    <servlet-name>RegistroUsuarioController</servlet-name>
-    <servlet-class>controller.RegistroUsuarioController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RegistroUsuarioController</servlet-name>
-    <url-pattern>/RegistroUsuarioController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>LoginController</display-name>
-    <servlet-name>LoginController</servlet-name>
-    <servlet-class>controller.LoginController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LoginController</servlet-name>
-    <url-pattern>/LoginController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>VerCarritoServlet</display-name>
-    <servlet-name>VerCarritoServlet</servlet-name>
-    <servlet-class>controller.VerCarritoServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>VerCarritoServlet</servlet-name>
-    <url-pattern>/VerCarritoServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>AgregarCarritoController</display-name>
     <servlet-name>AgregarCarritoController</servlet-name>
     <servlet-class>controller.AgregarCarritoController</servlet-class>
   </servlet>
@@ -114,19 +22,8 @@
     <servlet-name>AgregarCarritoController</servlet-name>
     <url-pattern>/AgregarCarritoController</url-pattern>
   </servlet-mapping>
+
   <servlet>
-    <description></description>
-    <display-name>InventarioController</display-name>
-    <servlet-name>InventarioController</servlet-name>
-    <servlet-class>controller.InventarioController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>InventarioController</servlet-name>
-    <url-pattern>/InventarioController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>CarritoController</display-name>
     <servlet-name>CarritoController</servlet-name>
     <servlet-class>controller.CarritoController</servlet-class>
   </servlet>
@@ -134,59 +31,17 @@
     <servlet-name>CarritoController</servlet-name>
     <url-pattern>/CarritoController</url-pattern>
   </servlet-mapping>
+
   <servlet>
-    <description></description>
-    <display-name>RegistrarventaController</display-name>
-    <servlet-name>RegistrarventaController</servlet-name>
-    <servlet-class>controller.RegistrarventaController</servlet-class>
+    <servlet-name>DesayunoController</servlet-name>
+    <servlet-class>controller.DesayunoController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>RegistrarventaController</servlet-name>
-    <url-pattern>/RegistrarventaController</url-pattern>
+    <servlet-name>DesayunoController</servlet-name>
+    <url-pattern>/DesayunoController</url-pattern>
   </servlet-mapping>
+
   <servlet>
-    <description></description>
-    <display-name>RegistrarVentaController</display-name>
-    <servlet-name>RegistrarVentaController</servlet-name>
-    <servlet-class>controller.RegistrarVentaController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RegistrarVentaController</servlet-name>
-    <url-pattern>/RegistrarVentaController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>RegistroUsuarioAdminController</display-name>
-    <servlet-name>RegistroUsuarioAdminController</servlet-name>
-    <servlet-class>controller.RegistroUsuarioAdminController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RegistroUsuarioAdminController</servlet-name>
-    <url-pattern>/RegistroUsuarioAdminController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>VerComprasController</display-name>
-    <servlet-name>VerComprasController</servlet-name>
-    <servlet-class>controller.VerComprasController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>VerComprasController</servlet-name>
-    <url-pattern>/VerComprasController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>ventrasController</display-name>
-    <servlet-name>ventrasController</servlet-name>
-    <servlet-class>controller.ventrasController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ventrasController</servlet-name>
-    <url-pattern>/ventrasController</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>DetalleVentaController</display-name>
     <servlet-name>DetalleVentaController</servlet-name>
     <servlet-class>controller.DetalleVentaController</servlet-class>
   </servlet>
@@ -194,4 +49,157 @@
     <servlet-name>DetalleVentaController</servlet-name>
     <url-pattern>/DetalleVentaController</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>InicioController</servlet-name>
+    <servlet-class>controller.InicioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InicioController</servlet-name>
+    <url-pattern>/InicioController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>InventarioController</servlet-name>
+    <servlet-class>controller.InventarioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InventarioController</servlet-name>
+    <url-pattern>/InventarioController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>LoginController</servlet-name>
+    <servlet-class>controller.LoginController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginController</servlet-name>
+    <url-pattern>/LoginController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>MiniDulcesController</servlet-name>
+    <servlet-class>controller.MiniDulcesController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MiniDulcesController</servlet-name>
+    <url-pattern>/MiniDulcesController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>MiniTortas</servlet-name>
+    <servlet-class>controller.MiniTortas</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MiniTortas</servlet-name>
+    <url-pattern>/MiniTortas</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>PostresController</servlet-name>
+    <servlet-class>controller.PostresController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PostresController</servlet-name>
+    <url-pattern>/PostresController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProductoController</servlet-name>
+    <servlet-class>controller.ProductoController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProductoController</servlet-name>
+    <url-pattern>/ProductoController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RegistrarventaController</servlet-name>
+    <servlet-class>controller.RegistrarventaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistrarventaController</servlet-name>
+    <url-pattern>/RegistrarventaController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RegistrarVentaController</servlet-name>
+    <servlet-class>controller.RegistrarVentaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistrarVentaController</servlet-name>
+    <url-pattern>/RegistrarVentaController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RegistroUsuarioAdminController</servlet-name>
+    <servlet-class>controller.RegistroUsuarioAdminController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistroUsuarioAdminController</servlet-name>
+    <url-pattern>/RegistroUsuarioAdminController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RegistroUsuarioController</servlet-name>
+    <servlet-class>controller.RegistroUsuarioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistroUsuarioController</servlet-name>
+    <url-pattern>/RegistroUsuarioController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UsuarioController</servlet-name>
+    <servlet-class>controller.UsuarioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UsuarioController</servlet-name>
+    <url-pattern>/UsuarioController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>VentasController</servlet-name>
+    <servlet-class>controller.VentasController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VentasController</servlet-name>
+    <url-pattern>/VentasController</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>VerCarritoServlet</servlet-name>
+    <servlet-class>controller.VerCarritoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VerCarritoServlet</servlet-name>
+    <url-pattern>/VerCarritoServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>VerComprasController</servlet-name>
+    <servlet-class>controller.VerComprasController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VerComprasController</servlet-name>
+    <url-pattern>/VerComprasController</url-pattern>
+  </servlet-mapping>
+
+
+ <!--Dashbrd panel admin -->
+  <servlet>
+    <servlet-name>DashboardServlet</servlet-name>
+    <servlet-class>controller.DashboardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DashboardServlet</servlet-name>
+    <url-pattern>/dashboard</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- Página de inicio -->
+  <welcome-file-list>
+    <welcome-file>InicioController</welcome-file>
+  </welcome-file-list>
+
 </web-app>

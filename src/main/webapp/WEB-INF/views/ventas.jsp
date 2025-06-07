@@ -4,7 +4,7 @@
 <!-- sesion para que no se pueda entrar a la vista sin autorizacion by:clever -->
 <%
 Integer userType = (Integer) session.getAttribute("idTipoUsuario");
-if (userType == null || userType != 1) {
+if (userType == null || (userType != 1)) {
     response.sendRedirect(request.getContextPath() + "/login");
     return;
 }
@@ -63,7 +63,7 @@ if (userType == null || userType != 1) {
                                 <td><%= venta.obtenerEstadoVenta() %></td> <!-- Mostrar el estado -->
                                 <td>
                                     <!-- Botón para ver los detalles de la venta -->
-                                    <a href="<%=request.getContextPath() + "/detalleVenta?idVenta=" + venta.getIdVenta()%>"
+                                    <a href="<%=request.getContextPath() + "/verDetallesVenta?idVenta=" + venta.getIdVenta()%>"
                                        class="btn btn-info">Ver Detalles</a>
 
                                     <!-- Formulario para actualizar el estado -->
@@ -71,7 +71,8 @@ if (userType == null || userType != 1) {
                                         <input type="hidden" name="idVenta" value="<%=venta.getIdVenta()%>">
                                         <select name="nuevoEstado" class="form-control-sm">
                                             <option value="1" <%= venta.getIdEstado() == 1 ? "selected" : "" %>>Por Atender</option>
-                                            <option value="2" <%= venta.getIdEstado() == 2 ? "selected" : "" %>>Atendido</option>
+                                            <option value="2" <%= venta.getIdEstado() == 2 ? "selected" : "" %>>Completada</option>
+                                            <option value="3" <%= venta.getIdEstado() == 3 ? "selected" : "" %>>Atendido</option>
                                         </select>
                                         <button type="submit" class="btn btn-warning btn-sm">Actualizar Estado</button>
                                     </form>
@@ -79,7 +80,7 @@ if (userType == null || userType != 1) {
                             </tr>
                             <%
                                 }
-                            } else {
+                            } else { 
                             %>
                             <tr>
                                 <td colspan="7" class="text-center">No hay ventas registradas.</td>
@@ -87,7 +88,7 @@ if (userType == null || userType != 1) {
                             <%
                             }
                             %>
-                        </tbody>b
+                        </tbody>
                     </table>
                 </div>
             </div>

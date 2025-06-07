@@ -13,7 +13,7 @@
                     <h5 class="text-uppercase mb-4 font-weight-bold text-dark">Servicios</h5>
                     <hr class="mb-4">
                     <p>
-                        <a href="politicas.php" class="text-dark">T�rminos y condiciones</a>
+                        <a href="politicas.php" class="text-dark">Terminos y condiciones</a>
                     </p>
                     <p>
                         <a href="#" class="text-dark">Preguntas Frecuentes</a>
@@ -22,7 +22,7 @@
                         <a href="#" class="text-dark">Formas de Pago</a>
                     </p>
                     <p>
-                        <a href="#" class="text-dark">Horarios de Atenci�n</a>
+                        <a href="#" class="text-dark">Horarios de Atencion</a>
                     </p>
                 </div>
                 <div class="col-md-3 col-lg-4 col-xl-4 mx-auto mt-3">
@@ -33,7 +33,7 @@
                                 class="fa-regular fa-envelope me-3"></i>panaderia.donRODRIGUEZ@gmail.com</a>
                     </p>
                     <p>
-                        <i class="fas fa-home me-3"></i>Ubicacion: Lima,Per�
+                        <i class="fas fa-home me-3"></i>Ubicacion: Lima,Peru
                     </p>
                     <p>
                         <i class="fas fa-phone me-3"></i>Celular: 968 302 472

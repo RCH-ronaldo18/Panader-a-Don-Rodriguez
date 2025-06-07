@@ -4,6 +4,24 @@
 <html>
 <head>
 <jsp:include page="includes/head.jsp"/>
+<style>
+    .btn-comprar {
+      background-color: #7ab9c7; /* amarillo oscuro (puedes ajustar) */
+      color: #000;
+      font-weight: bold;
+      border: none;
+    }
+
+    .btn-comprar:hover {
+      background-color: #7ab9c7; /* un poco más oscuro al pasar el mouse */
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 500px; /* Puedes ajustar esta altura */
+      object-fit: cover; /* Asegura que se mantenga bien la imagen */
+    }
+  </style>
 </head>
 <body>
 <jsp:include page="includes/header.jsp" />
@@ -17,35 +35,35 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="img/slider.png" alt="Descripción de la imagen"  style="width: 100%;height: auto;">
+          <img src="img/slider1.png" alt="Descripción de la imagen">
           <div class="container">
             <div class="carousel-caption text-start">
               <h1>PANADERIA DON RODRIGUEZ</h1>
-              <p class="opacity-75">En <strong>Panadería DON RODRIGUEZ,</strong>,
+              <p class="opacity-75">En <strong>Panadería DON RODRIGUEZ</strong>,
                 cada bocado cuenta una historia de tradición y calidad.</p>
-              <p><a class="btn btn-lg" href="#">COMPRAR</a></p>
+              <p><a class="btn btn-lg btn-comprar" href="#">COMPRAR</a></p>
             </div>
           </div>
         </div>
         <div class="carousel-item ">
-          <img src="img/slider.png" alt="Descripción de la imagen"  class="img-fluid">
+          <img src="img/slider1.png" alt="Descripción de la imagen"  class="img-fluid">
           <div class="container">
             <div class="carousel-caption text-start">
               <h1>PANADERIA DON RODRIGUEZ</h1>
-              <p class="opacity-75">En <strong>Panadería DON RODRIGUEZ,</strong>,
+              <p class="opacity-75">En <strong>Panadería DON RODRIGUEZ</strong>,
                 cada bocado cuenta una historia de tradición y calidad.</p>
-              <p><a class="btn btn-lg" href="#">COMPRAR</a></p>
+              <p><a class="btn btn-lg btn-comprar" href="#">COMPRAR</a></p>
             </div>
           </div>
         </div>
         <div class="carousel-item ">
-          <img src="img/slider.png" alt="Descripción de la imagen" class="img-fluid">
+          <img src="img/slider1.png" alt="Descripción de la imagen" class="img-fluid">
           <div class="container">
             <div class="carousel-caption text-start">
               <h1>PANADERIA DON RODRIGUEZ</h1>
-              <p class="opacity-75">En <strong>Panadería DON RODRIGUEZ,</strong>,
+              <p class="opacity-75">En <strong>Panadería DON RODRIGUEZ</strong>,
                 cada bocado cuenta una historia de tradición y calidad.</p>
-              <p><a class="btn btn-lg" href="#">COMPRAR</a></p>
+              <p><a class="btn btn-lg btn-comprar" href="#">COMPRAR</a></p>
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ public class Venta {
     private LocalTime horaVenta;
     private double total;
     private int idEstado;
+    private String nombreCliente;
     // Getters y Setters
     public long getIdVenta() {
         return idVenta;
@@ -58,6 +59,16 @@ public class Venta {
     public void setTotal(double total) {
         this.total = total;
     }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+
+
     public String obtenerEstadoVenta() {
         switch (this.idEstado) {
             case 1:

@@ -25,13 +25,13 @@
                                 <li><a class="dropdown-item" href="#">Correo de Usuario: ${correoUsuario}</a></li>
                                 <li><a class="dropdown-item" href="#">Rol: ${idTipoUsuario == '1' ? 'ADMINISTRADOR' : idTipoUsuario == '2' ? 'VENDEDOR' : idTipoUsuario == '3' ? 'USUARIO' : ''}</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/cerrarSesion">Cerrar sesión</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/cerrarSesion">Cerrar sesion</a></li>
                             </ul>
                         </div>
                     </c:when>
                     <c:otherwise>
                         <a href="${pageContext.request.contextPath}/login" class="btn btn-primary">
-                            <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
+                            <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesion
                         </a>
                     </c:otherwise>
                 </c:choose>

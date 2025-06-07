@@ -32,7 +32,8 @@
 
             <div class="form-group">
                 <label for="contrasena">Contraseña:</label>
-                <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                <input type="password" class="form-control" id="contrasena" name="contrasena" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+
             </div>
 
             <button type="submit" class="btn btn-productos btn-block">Iniciar Sesión</button>

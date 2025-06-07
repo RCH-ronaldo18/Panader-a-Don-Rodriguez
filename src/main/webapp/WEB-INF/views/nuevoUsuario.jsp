@@ -29,7 +29,7 @@ if (userType == null || userType != 1) {
 					</div>
 
 					<div class="form-group mb-3">
-						<label for="contrasena">Contrase�a:</label> <input type="password"
+						<label for="contrasena">Contraseña:</label> <input type="password"
 							class="form-control" id="contrasena" name="contrasena" required>
 					</div>
 
@@ -51,21 +51,21 @@ if (userType == null || userType != 1) {
 					</div>
 
 					<div class="form-group mb-3">
-						<label for="direccion">Direcci�n:</label> <input type="text"
+						<label for="direccion">Dirección:</label> <input type="text"
 							class="form-control" id="direccion" name="direccion" required>
 					</div>
 
 					<div class="form-group mb-3">
-						<label for="telefono">Tel�fono:</label> <input type="text"
+						<label for="telefono">Teléfono:</label> <input type="text"
 							class="form-control" id="telefono" name="telefono" required>
 					</div>
 
 					<button type="submit" class="btn btn-primary w-100">Guardar</button>
 				</form>
 				<div class="mt-3">
-					<a href="/Web_donRODRIGUEZ/usuarios" class="btn btn-secondary w-100">Volver
+					<a href="/Web_donRodriguez/usuarios" class="btn btn-secondary w-100">Volver
 						a la Lista</a>
-				</div>
+				</div> 
 			</div>
 		</div>
 	</div>

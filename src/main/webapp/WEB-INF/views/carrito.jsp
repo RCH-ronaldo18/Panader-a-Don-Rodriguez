@@ -1,6 +1,7 @@
 <%@ page import="model.Carrito" %>
 <%@ page import="model.Producto" %>
 <%@ page import="java.util.Map" %>
+<%@ page isELIgnored="false" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%
     // Obtener el carrito de la sesión
@@ -131,7 +132,7 @@
     <form action="${pageContext.request.contextPath}/registrarVenta" method="post" id="formRegistrarCompra" class="d-inline">
         <input type="hidden" name="idCliente" value="${idUsuario}">
         <input type="hidden" name="total" value="<%= totalGeneral %>"> <!-- Pasar el total general -->
-        <button type="button" id="btnRegistrarCompra" class="btn btn-success">Registrar Compra</button>
+        <button type="button" id="btnRegistrarCompra" class="btn btn-success">Registrar Compra</button> 
     </form>
     <form action="carrito" method="post" class="d-inline">
         <button type="submit" name="action" value="vaciar" class="btn btn-warning">Vaciar Carrito</button>
@@ -147,7 +148,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-danger" id="modalIniciarSesionLabel">¡Atención!</h5>
+                <h5 class="modal-title text-danger" id="modalIniciarSesionLabel">¡Atencion!</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -288,6 +289,43 @@ $(document).ready(function () {
             }
         });
     });
+</script>
+
+<!-- Modal de Éxito de Venta -->
+<div class="modal fade" id="modalVentaExitosa" tabindex="-1" aria-labelledby="modalVentaExitosaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-success" id="modalVentaExitosaLabel">¡Éxito!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        Venta registrada con éxito.
+      </div>
+      <div class="modal-footer">
+        <a href="${pageContext.request.contextPath}/verCompras" class="btn btn-primary">Ver Compras</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    window.onload = function () {
+        const errorMessage = "${error}";
+        const ventaExitosa = "${ventaExitosa}";
+
+        if (errorMessage && errorMessage.trim() !== "") {
+            document.getElementById("modalErrorMessage").innerText = errorMessage;
+            var modal = new bootstrap.Modal(document.getElementById('modalError'));
+            modal.show();
+        }
+
+        if (ventaExitosa && ventaExitosa === "true") {
+            var modalExito = new bootstrap.Modal(document.getElementById('modalVentaExitosa'));
+            modalExito.show();
+        }
+    };
 </script>
 
 

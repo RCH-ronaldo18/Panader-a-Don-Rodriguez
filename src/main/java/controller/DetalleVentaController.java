@@ -16,7 +16,7 @@ import dao.VentaDAO;
 /** 	
  * Servlet implementation class DetalleVentaController
  */
-@WebServlet("/detalleVenta")
+@WebServlet("/verDetallesVenta")
 public class DetalleVentaController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -26,6 +26,7 @@ public class DetalleVentaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
         long idVenta = Long.parseLong(request.getParameter("idVenta"));
         VentaDAO ventaDAO = new VentaDAO();
         try {
@@ -43,3 +44,4 @@ public class DetalleVentaController extends HttpServlet {
     }
 }
 
+ 

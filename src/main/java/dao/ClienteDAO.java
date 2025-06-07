@@ -33,4 +33,20 @@ public class ClienteDAO {
         }
     }
 
+
+    public static int contarClientes() {
+            int total = 0;
+        try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM clientes");
+            ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+            total = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
 }
+
+ 

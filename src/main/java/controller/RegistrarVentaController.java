@@ -98,8 +98,8 @@ public class RegistrarVentaController extends HttpServlet {
             session.setAttribute("carrito", carrito);
 
             // Redirigir a una página de confirmación
-            request.setAttribute("success", "La venta ha sido registrada exitosamente.");
-            request.getRequestDispatcher("/WEB-INF/views/confirmacionVenta.jsp").forward(request, response);
+            request.setAttribute("ventaExitosa", true);
+            request.getRequestDispatcher("/WEB-INF/views/carrito.jsp").forward(request, response);
 
         } catch (SQLException e) {
             e.printStackTrace();
