@@ -90,15 +90,15 @@ public class LoginController extends HttpServlet {
     }
     
     // Método para cerrar sesión
-    @WebServlet("/cerrarSesion")
-    public static class LogoutServlet extends HttpServlet {
-        @Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            HttpSession session = request.getSession(false); // Obtener la sesión actual
-            if (session != null) {
-                session.invalidate(); // Invalidar la sesión
-            }
-            request.getRequestDispatcher("/WEB-INF/views/inicio.jsp").forward(request, response); // Redirigir a la página de inicio de sesión
-        }
-    }
+   // @WebServlet("/cerrarSesion")
+  //  public static class LogoutServlet extends HttpServlet {
+    //    @Override
+      //  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //    HttpSession session = request.getSession(false); // Obtener la sesión actual
+          //  if (session != null) {
+            //    session.invalidate(); // Invalidar la sesión
+            //}
+            //request.getRequestDispatcher("/WEB-INF/views/inicio.jsp").forward(request, response); 
+        //}
+    //}
 }

@@ -6,5 +6,13 @@ Avance 3 del proyecto
 3. PURISACA LOPEZ, MIGUEL ARMANDO ALONSO
 4. DIAZ SIMON, MICHAEL STEYTTER
 
+- Se uso Tomcat9, maven
 
-Actualizado
+GENERAR EL JAR
+- En la terminal: mvn clean package
+
+PARA EJECUTAR EL PROYECTO DESDE EL CMD
+- Entrar a la carpeta donde se genero el .jar
+java -jar "nombre_carpeta"/Web_donRODRIGUEZ-1.0-jar-with-dependencies.jar
+
+

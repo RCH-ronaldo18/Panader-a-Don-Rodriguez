@@ -6,8 +6,9 @@
 
     <groupId>com.donRODRIGUEZ</groupId>
     <artifactId>Web_donRODRIGUEZ</artifactId>
-    <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
     <name>Web_donRODRIGUEZ</name>
 
     <properties>
@@ -17,23 +18,29 @@
     </properties>
 
     <dependencies>
-        <!-- Servlet API -->
+        <!-- Tomcat embebido -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>9.0.87</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>9.0.87</version>
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- JSP API -->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>
             <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- JSTL -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -54,31 +61,27 @@
             <version>3.21.9</version>
         </dependency>
 
- <!-- Apache POI (Excel .xlsx support) -->
-    <dependency>
-        <groupId>org.apache.poi</groupId>
-        <artifactId>poi-ooxml</artifactId>
-        <version>5.2.3</version>
-    </dependency>
-
-
- <!-- DASHBOARD) -->
-<dependency>
-  <groupId>javax.servlet</groupId>
-  <artifactId>javax.servlet-api</artifactId>
-  <version>4.0.1</version>
-  <scope>provided</scope>
-</dependency>
-
-
-
+        <!-- Apache POI (Excel .xlsx support) -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version>
+        </dependency>
     </dependencies>
 
-    <!-- Reporte Excel -->
-    
-
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <targetPath>webapp</targetPath>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+
         <plugins>
+            <!-- Compilador -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -89,11 +92,34 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
-            </plugin>
+            <!-- Plugin para empaquetar en JAR ejecutable -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <version>3.4.2</version>
+    <configuration>
+        <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+        <archive>
+            <manifest>
+                <mainClass>launcher.Main</mainClass>
+            </manifest>
+        </archive>
+        <outputDirectory>${project.basedir}/../../JAR</outputDirectory>
+        <finalName>donRodriguezApp</finalName> <!-- Nombre personalizado -->
+    </configuration>
+    <executions>
+        <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+                <goal>single</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
         </plugins>
     </build>
 </project>

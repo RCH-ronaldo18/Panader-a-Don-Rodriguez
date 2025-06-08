@@ -4,14 +4,15 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
-  <!-- Servlets -->
+  <!-- Servlets con URLs limpias y en minúsculas con guiones -->
+
   <servlet>
     <servlet-name>ActualizarEstadoVentaController</servlet-name>
     <servlet-class>controller.ActualizarEstadoVentaController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ActualizarEstadoVentaController</servlet-name>
-    <url-pattern>/ActualizarEstadoVentaController</url-pattern>
+    <url-pattern>/actualizarEstadoVenta</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -20,7 +21,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>AgregarCarritoController</servlet-name>
-    <url-pattern>/AgregarCarritoController</url-pattern>
+    <url-pattern>/agregar-carrito</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -29,7 +30,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>CarritoController</servlet-name>
-    <url-pattern>/CarritoController</url-pattern>
+    <url-pattern>/carrito</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -38,7 +39,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>DesayunoController</servlet-name>
-    <url-pattern>/DesayunoController</url-pattern>
+    <url-pattern>/desayuno</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -47,7 +48,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>DetalleVentaController</servlet-name>
-    <url-pattern>/DetalleVentaController</url-pattern>
+    <url-pattern>/verDetallesVenta</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -56,7 +57,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>InicioController</servlet-name>
-    <url-pattern>/InicioController</url-pattern>
+    <url-pattern>/inicio</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -65,7 +66,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>InventarioController</servlet-name>
-    <url-pattern>/InventarioController</url-pattern>
+    <url-pattern>/inventario</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -74,7 +75,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>LoginController</servlet-name>
-    <url-pattern>/LoginController</url-pattern>
+    <url-pattern>/login</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -83,7 +84,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>MiniDulcesController</servlet-name>
-    <url-pattern>/MiniDulcesController</url-pattern>
+    <url-pattern>/mini-dulces</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -92,7 +93,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>MiniTortas</servlet-name>
-    <url-pattern>/MiniTortas</url-pattern>
+    <url-pattern>/mini-tortas</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -101,7 +102,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>PostresController</servlet-name>
-    <url-pattern>/PostresController</url-pattern>
+    <url-pattern>/postres</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -110,16 +111,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ProductoController</servlet-name>
-    <url-pattern>/ProductoController</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>RegistrarventaController</servlet-name>
-    <servlet-class>controller.RegistrarventaController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RegistrarventaController</servlet-name>
-    <url-pattern>/RegistrarventaController</url-pattern>
+    <url-pattern>/productos</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -128,7 +120,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>RegistrarVentaController</servlet-name>
-    <url-pattern>/RegistrarVentaController</url-pattern>
+    <url-pattern>/registrarVenta</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -137,7 +129,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>RegistroUsuarioAdminController</servlet-name>
-    <url-pattern>/RegistroUsuarioAdminController</url-pattern>
+    <url-pattern>/registro-usuario-admin</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -146,25 +138,25 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>RegistroUsuarioController</servlet-name>
-    <url-pattern>/RegistroUsuarioController</url-pattern>
+    <url-pattern>/registro</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>UsuarioController</servlet-name>
-    <servlet-class>controller.UsuarioController</servlet-class>
+    <servlet-name>UsuarioAdminController</servlet-name>
+    <servlet-class>controller.UsuarioAdminController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>UsuarioController</servlet-name>
-    <url-pattern>/UsuarioController</url-pattern>
+    <servlet-name>UsuarioAdminController</servlet-name>
+    <url-pattern>/usuarios</url-pattern>
   </servlet-mapping>
 
   <servlet>
     <servlet-name>VentasController</servlet-name>
-    <servlet-class>controller.VentasController</servlet-class>
+    <servlet-class>controller.VentaController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>VentasController</servlet-name>
-    <url-pattern>/VentasController</url-pattern>
+    <url-pattern>/ventas</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -173,7 +165,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>VerCarritoServlet</servlet-name>
-    <url-pattern>/VerCarritoServlet</url-pattern>
+    <url-pattern>/ver-carrito</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -182,11 +174,10 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>VerComprasController</servlet-name>
-    <url-pattern>/VerComprasController</url-pattern>
+    <url-pattern>/verCompras</url-pattern>
   </servlet-mapping>
 
-
- <!--Dashbrd panel admin -->
+  <!-- Dashboard panel admin -->
   <servlet>
     <servlet-name>DashboardServlet</servlet-name>
     <servlet-class>controller.DashboardServlet</servlet-class>
@@ -196,10 +187,32 @@
     <url-pattern>/dashboard</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>ExportarVentasExcelServlet</servlet-name>
+    <servlet-class>controller.ExportarVentasExcelServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ExportarVentasExcelServlet</servlet-name>
+    <url-pattern>/reporte-ventas</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <servlet-name>CerrarSesionServlet</servlet-name>
+    <servlet-class>controller.CerrarSesionServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>CerrarSesionServlet</servlet-name>
+    <url-pattern>/cerrarSesion</url-pattern>
+</servlet-mapping>
+
+
 
   <!-- Página de inicio -->
   <welcome-file-list>
-    <welcome-file>InicioController</welcome-file>
+    <welcome-file>inicio</welcome-file>
   </welcome-file-list>
 
 </web-app>

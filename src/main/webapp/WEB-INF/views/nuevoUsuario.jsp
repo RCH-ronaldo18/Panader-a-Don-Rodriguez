@@ -63,7 +63,7 @@ if (userType == null || userType != 1) {
 					<button type="submit" class="btn btn-primary w-100">Guardar</button>
 				</form>
 				<div class="mt-3">
-					<a href="/Web_donRodriguez/usuarios" class="btn btn-secondary w-100">Volver
+					<a href="/usuarios" class="btn btn-secondary w-100">Volver
 						a la Lista</a>
 				</div> 
 			</div>
