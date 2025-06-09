@@ -18,7 +18,7 @@
     </properties>
 
     <dependencies>
-        <!-- Tomcat embebido -->
+        <!-- Tomcat embebido y soporte JSP/JSTL -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
@@ -30,22 +30,39 @@
             <version>9.0.87</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-el</artifactId>
+            <version>9.0.87</version>
+        </dependency>
+
+        <!-- Servlets API sin scope provided (para empaquetar) -->
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
-            <scope>provided</scope>
+            <scope>provided</scope> <!-- Puedes dejarlo provided si usas servidor externo -->
         </dependency>
+
+        <!-- JSP API -->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>
             <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
+
+        <!-- JSTL (sin scope provided para incluir en JAR) -->
+<dependency>
+    <groupId>org.glassfish.web</groupId>
+    <artifactId>jstl-impl</artifactId>
+    <version>1.2</version>
+</dependency>
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>jstl</artifactId>
+    <version>1.2</version>
+</dependency>
+
 
         <!-- MySQL Connector -->
         <dependency>
@@ -61,7 +78,7 @@
             <version>3.21.9</version>
         </dependency>
 
-        <!-- Apache POI (Excel .xlsx support) -->
+        <!-- Apache POI -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
@@ -92,34 +109,33 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin para empaquetar en JAR ejecutable -->
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-assembly-plugin</artifactId>
-    <version>3.4.2</version>
-    <configuration>
-        <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-        </descriptorRefs>
-        <archive>
-            <manifest>
-                <mainClass>launcher.Main</mainClass>
-            </manifest>
-        </archive>
-        <outputDirectory>${project.basedir}/../../JAR</outputDirectory>
-        <finalName>donRodriguezApp</finalName> <!-- Nombre personalizado -->
-    </configuration>
-    <executions>
-        <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-                <goal>single</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>
-
+            <!-- Empaquetar JAR ejecutable con dependencias -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>launcher.Main</mainClass> <!-- Cambia esto por tu clase main -->
+                        </manifest>
+                    </archive>
+                    <outputDirectory>${project.basedir}/../../JAR</outputDirectory>
+                    <finalName>donRodriguezApp</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

@@ -1,24 +1,33 @@
 package launcher;
 
 import org.apache.catalina.startup.Tomcat;
+import org.apache.catalina.WebResourceRoot;
+import org.apache.catalina.webresources.StandardRoot;
+
 import java.io.File;
 import java.awt.Desktop;
 import java.net.URI;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String webappDirLocation = "src/main/webapp/";
+        // Apuntar a la carpeta "webapp" directamente (debe estar junto al .exe)
+        String webappDirLocation = "webapp";
+
         Tomcat tomcat = new Tomcat();
-
         tomcat.setPort(8080);
-        tomcat.getConnector(); // Crea el conector
+        tomcat.getConnector(); // Fuerza creación del conector
 
-        tomcat.addWebapp("", new File(webappDirLocation).getAbsolutePath());
+        // Cargar contexto con la ruta absoluta al directorio webapp
+        var ctx = tomcat.addWebapp("", new File(webappDirLocation).getAbsolutePath());
 
-        System.out.println("Iniciando servidor en http://localhost:8080/");
+        // Establecer recursos del contexto (necesario para JSP, JSTL, etc.)
+        WebResourceRoot resources = new StandardRoot(ctx);
+        ctx.setResources(resources);
+
+        System.out.println("Servidor iniciado en http://localhost:8080/");
         tomcat.start();
 
-        // Abrir navegador automáticamente
+        // Abrir navegador automáticamente si es posible
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().browse(new URI("http://localhost:8080/"));
         }
