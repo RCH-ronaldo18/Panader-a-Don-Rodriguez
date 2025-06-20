@@ -19,21 +19,22 @@ import dao.VentaDAO;
 @WebServlet("/verCompras")
 public class VerComprasController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	        int idCliente = (int) request.getSession().getAttribute("idUsuario");
-	        VentaDAO ventaDAO = new VentaDAO();
-	        
-	        try {
-	            // Obtener todas las ventas del cliente
-	            List<Venta> ventas = ventaDAO.obtenerVentasPorCliente(idCliente);
-	            request.setAttribute("ventas", ventas);
-	            
-	            // Mostrar la página con las compras
-	            request.getRequestDispatcher("/WEB-INF/views/verCompras.jsp").forward(request, response);
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            response.sendRedirect("error.jsp");
-	        }
-	    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		int idCliente = (int) request.getSession().getAttribute("idUsuario");
+		VentaDAO ventaDAO = new VentaDAO();
+
+		try {
+			// Obtener todas las ventas del cliente
+			List<Venta> ventas = ventaDAO.obtenerVentasPorCliente(idCliente);
+			request.setAttribute("ventas", ventas);
+
+			// Mostrar la página con las compras
+			request.getRequestDispatcher("/WEB-INF/views/verCompras.jsp").forward(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.sendRedirect("error.jsp");
+		}
+	}
 }

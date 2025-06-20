@@ -25,6 +25,7 @@ public class Carrito {
         nombres.remove(idProducto);
         precios.remove(idProducto);
     }
+
     public void actualizarProducto(int idProducto, int cantidad) {
         if (productos.containsKey(idProducto)) {
             if (cantidad > 0) {
@@ -53,4 +54,3 @@ public class Carrito {
         precios.clear();
     }
 }
-

@@ -24,11 +24,8 @@ public class ActualizarEstadoVentaController extends HttpServlet {
             long idVenta = Long.parseLong(request.getParameter("idVenta"));
             int nuevoEstado = Integer.parseInt(request.getParameter("nuevoEstado")); // 1 o 2
 
-
             System.out.println(idVenta);
-              System.out.println(nuevoEstado);
-
-
+            System.out.println(nuevoEstado);
 
             boolean actualizado = ventaDAO.actualizarEstado(idVenta, nuevoEstado);
 
@@ -36,13 +33,13 @@ public class ActualizarEstadoVentaController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/ventas");
             } else {
                 request.setAttribute("error", "No se pudo actualizar el estado de la venta.");
-                request.getRequestDispatcher("/ventas.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/ventas.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Error al actualizar el estado.");
-            request.getRequestDispatcher("/ventas.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/ventas.jsp").forward(request, response);
         }
     }
-} 
+}

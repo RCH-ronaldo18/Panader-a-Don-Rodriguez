@@ -47,12 +47,13 @@ public class LoginController extends HttpServlet {
                 // Guardar el correo electrónico y el tipo de usuario en la sesión
                 request.getSession().setAttribute("correoUsuario", usuario.getCorreo_usuario());
                 request.getSession().setAttribute("idTipoUsuario", usuario.getId_tipo_usuario());
-                request.getSession().setAttribute("idUsuario", usuario.getId_usuario()); // Suponiendo que tienes un método getId()
+                request.getSession().setAttribute("idUsuario", usuario.getId_usuario()); // Suponiendo que tienes un
+                                                                                         // método getId()
 
                 // Redirigir según el tipo de usuario
                 switch (usuario.getId_tipo_usuario()) {
                     case 1: // Administrador
-                    	 request.getRequestDispatcher("/WEB-INF/views/administrador.jsp").forward(request, response);
+                        request.getRequestDispatcher("/WEB-INF/views/administrador.jsp").forward(request, response);
                         break;
                     case 2: // Vendedor
                         request.getRequestDispatcher("/WEB-INF/views/vendedor.jsp").forward(request, response);
@@ -88,17 +89,19 @@ public class LoginController extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-    
+
     // Método para cerrar sesión
-   // @WebServlet("/cerrarSesion")
-  //  public static class LogoutServlet extends HttpServlet {
-    //    @Override
-      //  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //    HttpSession session = request.getSession(false); // Obtener la sesión actual
-          //  if (session != null) {
-            //    session.invalidate(); // Invalidar la sesión
-            //}
-            //request.getRequestDispatcher("/WEB-INF/views/inicio.jsp").forward(request, response); 
-        //}
-    //}
+    // @WebServlet("/cerrarSesion")
+    // public static class LogoutServlet extends HttpServlet {
+    // @Override
+    // protected void doGet(HttpServletRequest request, HttpServletResponse
+    // response) throws ServletException, IOException {
+    // HttpSession session = request.getSession(false); // Obtener la sesión actual
+    // if (session != null) {
+    // session.invalidate(); // Invalidar la sesión
+    // }
+    // request.getRequestDispatcher("/WEB-INF/views/inicio.jsp").forward(request,
+    // response);
+    // }
+    // }
 }

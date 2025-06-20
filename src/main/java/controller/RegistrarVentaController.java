@@ -1,6 +1,5 @@
 package controller;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,7 @@ import model.Venta;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 @WebServlet("/registrarVenta")
 public class RegistrarVentaController extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -28,18 +28,19 @@ public class RegistrarVentaController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         // Obtener el carrito de la sesión
         HttpSession session = request.getSession();
         Carrito carrito = (Carrito) session.getAttribute("carrito");
-        
+
         if (carrito == null || carrito.getProductos().isEmpty()) {
             // Si el carrito está vacío, redirigir con un mensaje de error
             request.setAttribute("error", "El carrito está vacío. No se puede registrar la venta.");
             request.getRequestDispatcher("/WEB-INF/views/carrito.jsp").forward(request, response);
             return;
         }
-        
+
         try {
             // Obtener datos del cliente desde la solicitud o la sesión
             long idCliente = Long.parseLong(request.getParameter("idCliente"));
@@ -77,21 +78,26 @@ public class RegistrarVentaController extends HttpServlet {
             boolean ventaExitosa = ventaDAO.registrarVentaConDetalles(venta, detalles);
 
             // Verificar si el inventario se actualizó correctamente
-            for (DetalleVenta detalle : detalles) {
-                boolean inventarioActualizado = ventaDAO.actualizarInventario(detalle.getIdProducto(), detalle.getCantidad());
-                if (!inventarioActualizado) {
-                    // Obtener cantidad disponible en el inventario
-                    int cantidadDisponible = ventaDAO.obtenerCantidadDisponible(detalle.getIdProducto());
-                    
-                    // Crear un mensaje de error específico
-                    String mensajeError = "No tenemos suficiente stock para este producto, solo tenemos " + cantidadDisponible + " unidades disponibles.";
-                    
-                    // Pasar el mensaje de error a la vista
-                    request.setAttribute("error", mensajeError);
-                    request.getRequestDispatcher("/WEB-INF/views/carrito.jsp").forward(request, response);
-                    return;
-                }
-            }
+            // for (DetalleVenta detalle : detalles) {
+            // boolean inventarioActualizado =
+            // ventaDAO.actualizarInventario(detalle.getIdProducto(),
+            // detalle.getCantidad());
+            // if (!inventarioActualizado) {
+            // Obtener cantidad disponible en el inventario
+            // int cantidadDisponible =
+            // ventaDAO.obtenerCantidadDisponible(detalle.getIdProducto());
+
+            // Crear un mensaje de error específico
+            // String mensajeError = "No tenemos suficiente stock para este producto, solo
+            // tenemos " + cantidadDisponible + " unidades disponibles.";
+
+            // Pasar el mensaje de error a la vista
+            // request.setAttribute("error", mensajeError);
+            // request.getRequestDispatcher("/WEB-INF/views/carrito.jsp").forward(request,
+            // response);
+            // return;
+            // }
+            // }
 
             // Limpiar el carrito después de registrar la venta
             carrito.vaciarCarrito();

@@ -16,11 +16,13 @@ import java.util.List;
 
 @WebServlet("/mini-tortas")
 public class MiniTortas extends HttpServlet {
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         listProductosPorCategoria(request, response);
     }
 
-    private void listProductosPorCategoria(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void listProductosPorCategoria(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         List<Producto> listaProductos = new ArrayList<>();
         int id_categoria = 4;
 
@@ -36,8 +38,7 @@ public class MiniTortas extends HttpServlet {
                         resultSet.getString("nombre"),
                         resultSet.getString("descripcion"),
                         resultSet.getDouble("precio"),
-                        resultSet.getInt("id_categoria")
-                );
+                        resultSet.getInt("id_categoria"));
                 listaProductos.add(producto);
             }
         } catch (SQLException e) {

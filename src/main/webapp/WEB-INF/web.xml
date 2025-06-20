@@ -70,6 +70,17 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>MovimientoController</servlet-name>
+    <servlet-class>controller.MovimientoController</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>MovimientoController</servlet-name>
+    <url-pattern>/movimientos</url-pattern>
+</servlet-mapping>
+
+
+  <servlet>
     <servlet-name>LoginController</servlet-name>
     <servlet-class>controller.LoginController</servlet-class>
   </servlet>
@@ -195,6 +206,17 @@
 <servlet-mapping>
     <servlet-name>ExportarVentasExcelServlet</servlet-name>
     <url-pattern>/reporte-ventas</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <servlet-name>ExportarMovimientoExcelServlet</servlet-name>
+    <servlet-class>controller.ExportarMovimientoExcelServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ExportarMovimientoExcelServlet</servlet-name>
+    <url-pattern>/reporte-movimientos</url-pattern>
 </servlet-mapping>
 
 

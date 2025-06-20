@@ -19,35 +19,36 @@ import java.util.List;
 @WebServlet("/desayuno")
 public class DesayunoController extends HttpServlet {
 
-	    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	        listProductosPorCategoria(request, response);
-	    }
-
-	    private void listProductosPorCategoria(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	        List<Producto> listaProductos = new ArrayList<>();
-	        int id_categoria = 1;
-
-	        try (Connection connection = DatabaseConnection.getConnection()) {
-	            String sql = "SELECT * FROM productos WHERE id_categoria = ?";
-	            PreparedStatement statement = connection.prepareStatement(sql);
-	            statement.setInt(1, id_categoria);
-	            ResultSet resultSet = statement.executeQuery();
-
-	            while (resultSet.next()) {
-	                Producto producto = new Producto(
-	                        resultSet.getInt("id_producto"),
-	                        resultSet.getString("nombre"),
-	                        resultSet.getString("descripcion"),
-	                        resultSet.getDouble("precio"),
-	                        resultSet.getInt("id_categoria")
-	                );
-	                listaProductos.add(producto);
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-
-	        request.setAttribute("listaProductos", listaProductos);
-	        request.getRequestDispatcher("/WEB-INF/views/desayuno.jsp").forward(request, response);
-	    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		listProductosPorCategoria(request, response);
 	}
+
+	private void listProductosPorCategoria(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		List<Producto> listaProductos = new ArrayList<>();
+		int id_categoria = 1;
+
+		try (Connection connection = DatabaseConnection.getConnection()) {
+			String sql = "SELECT * FROM productos WHERE id_categoria = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, id_categoria);
+			ResultSet resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				Producto producto = new Producto(
+						resultSet.getInt("id_producto"),
+						resultSet.getString("nombre"),
+						resultSet.getString("descripcion"),
+						resultSet.getDouble("precio"),
+						resultSet.getInt("id_categoria"));
+				listaProductos.add(producto);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		request.setAttribute("listaProductos", listaProductos);
+		request.getRequestDispatcher("/WEB-INF/views/desayuno.jsp").forward(request, response);
+	}
+}

@@ -11,28 +11,29 @@ public class DetalleVenta {
     private double total;
     private String nombreProducto;
     private String nombreCliente;
+
     public String getNombreCliente() {
-		return nombreCliente;
-	}
+        return nombreCliente;
+    }
 
-	public void setNombreCliente(String nombreCliente) {
-		this.nombreCliente = nombreCliente;
-	}
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
 
-	// Getters y Setters
+    // Getters y Setters
     public long getIdDetalleVenta() {
         return idDetalleVenta;
     }
 
     public String getNombreProducto() {
-		return nombreProducto;
-	}
+        return nombreProducto;
+    }
 
-	public void setNombreProducto(String nombreProducto) {
-		this.nombreProducto = nombreProducto;
-	}
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
 
-	public void setIdDetalleVenta(long idDetalleVenta) {
+    public void setIdDetalleVenta(long idDetalleVenta) {
         this.idDetalleVenta = idDetalleVenta;
     }
 

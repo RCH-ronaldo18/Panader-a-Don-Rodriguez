@@ -11,20 +11,21 @@ public class Venta {
     private double total;
     private int idEstado;
     private String nombreCliente;
+
     // Getters y Setters
     public long getIdVenta() {
         return idVenta;
     }
 
     public int getIdEstado() {
-		return idEstado;
-	}
+        return idEstado;
+    }
 
-	public void setIdEstado(int idEstado) {
-		this.idEstado = idEstado;
-	}
+    public void setIdEstado(int idEstado) {
+        this.idEstado = idEstado;
+    }
 
-	public void setIdVenta(long idVenta) {
+    public void setIdVenta(long idVenta) {
         this.idVenta = idVenta;
     }
 
@@ -68,7 +69,6 @@ public class Venta {
         this.nombreCliente = nombreCliente;
     }
 
-
     public String obtenerEstadoVenta() {
         switch (this.idEstado) {
             case 1:
@@ -84,4 +84,3 @@ public class Venta {
     }
 
 }
-

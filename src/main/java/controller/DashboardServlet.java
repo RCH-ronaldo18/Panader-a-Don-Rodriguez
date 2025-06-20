@@ -59,12 +59,13 @@ public class DashboardServlet extends HttpServlet {
             if (conn != null) {
                 try {
                     conn.close();
-                } catch (SQLException ignore) {}
+                } catch (SQLException ignore) {
+                }
             }
         }
 
         // Redirigir a dashboard.jsp
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp"); 
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp");
         rd.forward(request, response);
     }
 }

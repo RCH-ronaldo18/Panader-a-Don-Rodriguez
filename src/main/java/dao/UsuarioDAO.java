@@ -14,7 +14,7 @@ public class UsuarioDAO {
     public int registrarUsuarioYRetornarId(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO usuarios (correo_usuario, contrasena, id_tipo_usuario) VALUES (?, ?, ?)";
         try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             // Asumimos que la contraseña ya está encriptada en el controlador
             ps.setString(1, usuario.getCorreo_usuario());
@@ -39,7 +39,7 @@ public class UsuarioDAO {
     public Usuario validarUsuario(String correoUsuario, String contrasena) throws SQLException {
         String sql = "SELECT * FROM usuarios WHERE correo_usuario = ? AND contrasena = ?";
         try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, correoUsuario);
             ps.setString(2, contrasena); // Contraseña encriptada para comparar
@@ -48,11 +48,10 @@ public class UsuarioDAO {
                 if (rs.next()) {
                     // Crear un objeto Usuario y devolverlo
                     return new Usuario(
-                        rs.getInt("id_usuario"),
-                        rs.getString("correo_usuario"),
-                        rs.getString("contrasena"),
-                        rs.getInt("id_tipo_usuario")
-                    );
+                            rs.getInt("id_usuario"),
+                            rs.getString("correo_usuario"),
+                            rs.getString("contrasena"),
+                            rs.getInt("id_tipo_usuario"));
                 }
             }
         } catch (SQLException e) {
@@ -67,7 +66,7 @@ public class UsuarioDAO {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE correo_usuario = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, correo);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -79,17 +78,16 @@ public class UsuarioDAO {
         return existe;
     }
 
-
     // Método para contar el total de usuarios registrados
     public static int contarUsuarios() {
         int total = 0;
         String sql = "SELECT COUNT(*) FROM usuarios";
 
         try (Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
-            total = rs.getInt(1);
+                total = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,6 +95,3 @@ public class UsuarioDAO {
         return total;
     }
 }
-
-
-

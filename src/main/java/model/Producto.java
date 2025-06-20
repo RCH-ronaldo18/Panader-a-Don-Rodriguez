@@ -7,6 +7,9 @@ public class Producto {
     private double precio;
     private int id_categoria;
 
+    public Producto() {
+    }
+
     // Constructor
     public Producto(int id_producto, String nombre, String descripcion, double precio, int id_categoria) {
         this.id_producto = id_producto;

@@ -95,43 +95,50 @@ public class ProductoController extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/productos.jsp").forward(request, response);
     }
 
-    private void createProducto(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String nombre = request.getParameter("nombre");
-        String descripcion = request.getParameter("descripcion");
-        double precio = Double.parseDouble(request.getParameter("precio"));
-        int id_categoria = Integer.parseInt(request.getParameter("id_categoria"));
+private void createProducto(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    String nombre = request.getParameter("nombre");
+    String descripcion = request.getParameter("descripcion");
+    double precio = Double.parseDouble(request.getParameter("precio"));
+    int id_categoria = Integer.parseInt(request.getParameter("id_categoria"));
 
-        // Guardar el producto en la base de datos primero y obtener el ID generado
-        int id_producto = 0;
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO productos (nombre, descripcion, precio, id_categoria) VALUES (?, ?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, nombre);
-            statement.setString(2, descripcion);
-            statement.setDouble(3, precio);
-            statement.setInt(4, id_categoria);
-            statement.executeUpdate();
+    int id_producto = 0;
 
-            // Obtener el ID del producto generado
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                id_producto = generatedKeys.getInt(1);  // Obtener el ID generado
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    try (Connection connection = DatabaseConnection.getConnection()) {
+        // Insertar producto
+        String sql = "INSERT INTO productos (nombre, descripcion, precio, id_categoria) VALUES (?, ?, ?, ?)";
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, nombre);
+        statement.setString(2, descripcion);
+        statement.setDouble(3, precio);
+        statement.setInt(4, id_categoria);
+        statement.executeUpdate();
+
+        ResultSet generatedKeys = statement.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            id_producto = generatedKeys.getInt(1);
         }
 
-        // Guardar la imagen con el ID del producto
-        Part filePart = request.getPart("imagen");
-        if (filePart != null && filePart.getSize() > 0) {
-            // Cambiar el nombre del archivo a id_producto.png
-            String fileName = id_producto + ".png";
-            String uploadPath = getServletContext().getRealPath("") + "img/PRODUCTOS/" + fileName;
-            filePart.write(uploadPath);  // Guardar el archivo con el ID del producto como nombre
-        }
+        // Insertar registro en inventario con cantidad 0 y categorización 'C'
+        String sqlInventario = "INSERT INTO inventario (cantidad, id_producto, CategorizacionABC) VALUES (0, ?, 'C')";
+        PreparedStatement psInv = connection.prepareStatement(sqlInventario);
+        psInv.setInt(1, id_producto);
+        psInv.executeUpdate();
 
-        response.sendRedirect("productos");
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    // Guardar imagen con el nombre del producto id
+    Part filePart = request.getPart("imagen");
+    if (filePart != null && filePart.getSize() > 0) {
+        String fileName = id_producto + ".png";
+        String uploadPath = getServletContext().getRealPath("") + "img/PRODUCTOS/" + fileName;
+        filePart.write(uploadPath);
+    }
+
+    response.sendRedirect("productos");
+}
+
 
 
     private void deleteProducto(HttpServletRequest request, HttpServletResponse response) throws IOException {

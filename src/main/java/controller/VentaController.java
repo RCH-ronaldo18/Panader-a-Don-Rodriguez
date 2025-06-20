@@ -27,7 +27,8 @@ public class VentaController extends HttpServlet {
         ventaDAO = new VentaDAO();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             // Obtener todas las ventas
             List<Venta> ventas = ventaDAO.obtenerTodasLasVentas();
@@ -41,7 +42,7 @@ public class VentaController extends HttpServlet {
             e.printStackTrace();
             // Enviar un mensaje de error en caso de fallo
             request.setAttribute("error", "Ocurrió un error al obtener las ventas.");
-            request.getRequestDispatcher("/ventas.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/ventas.jsp").forward(request, response);
         }
     }
 }

@@ -13,7 +13,8 @@ import java.io.IOException;
 @WebServlet("/carrito")
 public class CarritoController extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         // Mostrar el carrito
         HttpSession session = request.getSession();
         Carrito carrito = (Carrito) session.getAttribute("carrito");
@@ -27,7 +28,8 @@ public class CarritoController extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/carrito.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String action = request.getParameter("action");
 
         if (action != null) {
@@ -105,4 +107,3 @@ public class CarritoController extends HttpServlet {
         response.sendRedirect("carrito");
     }
 }
-

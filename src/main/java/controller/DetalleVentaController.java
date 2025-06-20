@@ -13,7 +13,7 @@ import java.util.List;
 
 import dao.VentaDAO;
 
-/** 	
+/**
  * Servlet implementation class DetalleVentaController
  */
 @WebServlet("/verDetallesVenta")
@@ -25,8 +25,9 @@ public class DetalleVentaController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         long idVenta = Long.parseLong(request.getParameter("idVenta"));
         VentaDAO ventaDAO = new VentaDAO();
         try {
@@ -43,5 +44,3 @@ public class DetalleVentaController extends HttpServlet {
         }
     }
 }
-
- 

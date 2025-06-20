@@ -1,242 +1,244 @@
 package controller;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import model.DatabaseConnection;
 import model.Inventario;
+import model.Producto;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@MultipartConfig
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
 @WebServlet("/inventario")
 public class InventarioController extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "list";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/pane";
+    private String jdbcUser = "root";
+    private String jdbcPass = "root";
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        Integer userType = (Integer) request.getSession().getAttribute("idTipoUsuario");
+        if (userType == null || userType != 1) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
         }
 
+        String action = request.getParameter("action");
+        if (action == null)
+            action = "";
+
         switch (action) {
-            case "list":
-                listInventario(request, response);
-                break;
-            case "delete":
-                deleteInventario(request, response);
+            case "new":
+                mostrarFormulario(request, response, null);
                 break;
             case "edit":
-                showEditForm(request, response);
+                int idEdit = Integer.parseInt(request.getParameter("id"));
+                Inventario inventario = obtenerInventarioPorId(idEdit);
+                mostrarFormulario(request, response, inventario);
                 break;
-            case "new":
-                showNewForm(request, response);
+            case "delete":
+                int idDelete = Integer.parseInt(request.getParameter("id"));
+                eliminarInventario(idDelete);
+                response.sendRedirect("inventario");
                 break;
             default:
-                listInventario(request, response);
-                break;
+                listarInventario(request, response);
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-        switch (action) {
-            case "create":
-                createInventario(request, response);
-                break;
-            case "update":
-                updateInventario(request, response);
-                break;
-            default:
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
-                break;
-        }
-    }
+        int id = request.getParameter("id_inventario").isEmpty() ? 0
+                : Integer.parseInt(request.getParameter("id_inventario"));
+        int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+        int idProducto = Integer.parseInt(request.getParameter("id_producto"));
+        String categorizacion = request.getParameter("categorizacion");
 
-    // Método para listar inventario
-    private void listInventario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Inventario> listaInventario = new ArrayList<>();
-        try (Connection connection = DatabaseConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM inventario")) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPass);
 
-            while (resultSet.next()) {
-                listaInventario.add(new Inventario(
-                        resultSet.getLong("id_inventario"),
-                        resultSet.getInt("cantidad"),
-                        resultSet.getDouble("precio"),
-                        resultSet.getString("fecha_ingreso"),
-                        resultSet.getString("hora_ingreso"),
-                        resultSet.getString("fecha_salida"),
-                        resultSet.getString("hora_salida"),
-                        resultSet.getLong("id_producto"),
-                        resultSet.getString("nombre"),
-                        resultSet.getString("descripcion")
-                ));
+            if (id == 0) {
+                // Verificamos si ya existe un registro para ese producto
+                String sqlSelect = "SELECT id_inventario, cantidad FROM inventario WHERE id_producto = ?";
+                PreparedStatement psSelect = con.prepareStatement(sqlSelect);
+                psSelect.setInt(1, idProducto);
+                ResultSet rs = psSelect.executeQuery();
+
+                if (rs.next()) {
+                    // Ya existe inventario para ese producto, actualizamos sumando cantidad
+                    int idInventarioExistente = rs.getInt("id_inventario");
+                    int cantidadExistente = rs.getInt("cantidad");
+
+                    String sqlUpdate = "UPDATE inventario SET cantidad = ?, CategorizacionABC = ? WHERE id_inventario = ?";
+                    PreparedStatement psUpdate = con.prepareStatement(sqlUpdate);
+                    psUpdate.setInt(1, cantidadExistente + cantidad);
+                    psUpdate.setString(2, categorizacion);
+                    psUpdate.setInt(3, idInventarioExistente);
+                    psUpdate.executeUpdate();
+                    psUpdate.close();
+                    id = idInventarioExistente;
+
+                } else {
+                    // No existe inventario para ese producto, insertamos nuevo registro
+                    ResultSet rse = null;
+                    String sqlInsert = "INSERT INTO inventario (cantidad, id_producto, CategorizacionABC) VALUES (?, ?, ?)";
+                    PreparedStatement psInsert = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
+
+                    psInsert.setInt(1, cantidad);
+                    psInsert.setInt(2, idProducto);
+                    psInsert.setString(3, categorizacion);
+                    psInsert.executeUpdate();
+                    rse = psInsert.getGeneratedKeys();
+                    if (rse.next()) {
+                        id = rse.getInt(1);
+                    }
+                    psInsert.close();
+                }
+
+                rs.close();
+                psSelect.close();
+
+            } else {
+                // Actualizar un registro existente (editar)
+                String sqlUpdate = "UPDATE inventario SET cantidad=?, id_producto=?, CategorizacionABC=? WHERE id_inventario=?";
+                PreparedStatement psUpdate = con.prepareStatement(sqlUpdate);
+                psUpdate.setInt(1, cantidad);
+                psUpdate.setInt(2, idProducto);
+                psUpdate.setString(3, categorizacion);
+                psUpdate.setInt(4, id);
+                psUpdate.executeUpdate();
+                psUpdate.close();
             }
-        } catch (SQLException e) {
+
+            // REGISTRAR MOVIMIENTO
+            String sqlInsert = "INSERT INTO movimiento_producto (id_inventario, fecha, detalle, entrada, salida) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement psInsert = con.prepareStatement(sqlInsert);
+            psInsert.setInt(1, id);
+            psInsert.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
+            psInsert.setString(3, "COMPRA");
+            psInsert.setInt(4, cantidad);
+            psInsert.setInt(5, 0);
+            psInsert.executeUpdate();
+            psInsert.close();
+            con.close();
+
+        } catch (Exception e) {
             e.printStackTrace();
-            // Manejo de errores: podrías redirigir a un error page o mostrar un mensaje en la vista
-            request.setAttribute("errorMessage", "Error al listar inventario: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
         }
+
+        response.sendRedirect("inventario");
+    }
+
+    private void listarInventario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<Inventario> listaInventario = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPass);
+            String sql = "SELECT i.id_inventario, i.cantidad, i.id_producto, i.CategorizacionABC, p.nombre AS nombreProducto "
+                    +
+                    "FROM inventario i " +
+                    "JOIN productos p ON i.id_producto = p.id_producto";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Inventario inv = new Inventario();
+                inv.setId_inventario(rs.getInt("id_inventario"));
+                inv.setCantidad(rs.getInt("cantidad"));
+                inv.setId_producto(rs.getInt("id_producto"));
+                inv.setCategorizacionABC(rs.getString("CategorizacionABC"));
+                inv.setNombreProducto(rs.getString("nombreProducto")); // Asignamos el nombre
+                listaInventario.add(inv);
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         request.setAttribute("listaInventario", listaInventario);
         request.getRequestDispatcher("/WEB-INF/views/inventario.jsp").forward(request, response);
     }
 
-    // Método para crear un nuevo inventario
-    private void createInventario(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private Inventario obtenerInventarioPorId(int id) {
+        Inventario inv = null;
         try {
-            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-            double precio = Double.parseDouble(request.getParameter("precio"));
-            String fecha_ingreso = request.getParameter("fecha_ingreso");
-            String hora_ingreso = request.getParameter("hora_ingreso");
-            String fecha_salida = request.getParameter("fecha_salida");
-            String hora_salida = request.getParameter("hora_salida");
-            Long id_producto = Long.parseLong(request.getParameter("id_producto"));
-            String nombre = request.getParameter("nombre");
-            String descripcion = request.getParameter("descripcion");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPass);
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM inventario WHERE id_inventario=?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
 
-            saveInventarioToDatabase(cantidad, precio, fecha_ingreso, hora_ingreso, fecha_salida, hora_salida, id_producto, nombre, descripcion);
-            response.sendRedirect("inventario");
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Datos inválidos");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error en la base de datos");
-        }
-    }
-
-    // Método para actualizar un inventario
-    private void updateInventario(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            Long id_inventario = Long.parseLong(request.getParameter("id_inventario"));
-            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-            double precio = Double.parseDouble(request.getParameter("precio"));
-            String fecha_ingreso = request.getParameter("fecha_ingreso");
-            String hora_ingreso = request.getParameter("hora_ingreso");
-            String fecha_salida = request.getParameter("fecha_salida");
-            String hora_salida = request.getParameter("hora_salida");
-            Long id_producto = Long.parseLong(request.getParameter("id_producto"));
-            String nombre = request.getParameter("nombre");
-            String descripcion = request.getParameter("descripcion");
-
-            updateInventarioInDatabase(id_inventario, cantidad, precio, fecha_ingreso, hora_ingreso, fecha_salida, hora_salida, id_producto, nombre, descripcion);
-            response.sendRedirect("inventario");
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Datos inválidos");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error en la base de datos");
-        }
-    }
-
-    // Método para eliminar un inventario
-    private void deleteInventario(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            Long id_inventario = Long.parseLong(request.getParameter("id"));
-            deleteInventarioFromDatabase(id_inventario);
-            response.sendRedirect("inventario");
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID inválido");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error en la base de datos");
-        }
-    }
-
-    // Métodos auxiliares
-    private void saveInventarioToDatabase(int cantidad, double precio, String fecha_ingreso, String hora_ingreso, String fecha_salida, String hora_salida, Long id_producto, String nombre, String descripcion) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO inventario (cantidad, precio, fecha_ingreso, hora_ingreso, fecha_salida, hora_salida, id_producto, nombre, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, cantidad);
-                statement.setDouble(2, precio);
-                statement.setString(3, fecha_ingreso);
-                statement.setString(4, hora_ingreso);
-                statement.setString(5, fecha_salida);
-                statement.setString(6, hora_salida);
-                statement.setLong(7, id_producto);
-                statement.setString(8, nombre);
-                statement.setString(9, descripcion);
-                statement.executeUpdate();
+            if (rs.next()) {
+                inv = new Inventario();
+                inv.setId_inventario(rs.getInt("id_inventario"));
+                inv.setCantidad(rs.getInt("cantidad"));
+                inv.setId_producto(rs.getInt("id_producto"));
+                inv.setCategorizacionABC(rs.getString("CategorizacionABC"));
             }
+
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return inv;
     }
 
-    private void updateInventarioInDatabase(Long id_inventario, int cantidad, double precio, String fecha_ingreso, String hora_ingreso, String fecha_salida, String hora_salida, Long id_producto, String nombre, String descripcion) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "UPDATE inventario SET cantidad = ?, precio = ?, fecha_ingreso = ?, hora_ingreso = ?, fecha_salida = ?, hora_salida = ?, id_producto = ?, nombre = ?, descripcion = ? WHERE id_inventario = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, cantidad);
-                statement.setDouble(2, precio);
-                statement.setString(3, fecha_ingreso);
-                statement.setString(4, hora_ingreso);
-                statement.setString(5, fecha_salida);
-                statement.setString(6, hora_salida);
-                statement.setLong(7, id_producto);
-                statement.setString(8, nombre);
-                statement.setString(9, descripcion);
-                statement.setLong(10, id_inventario);
-                statement.executeUpdate();
-            }
-        }
-    }
-
-    private void deleteInventarioFromDatabase(Long id_inventario) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "DELETE FROM inventario WHERE id_inventario = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setLong(1, id_inventario);
-                statement.executeUpdate();
-            }
-        }
-    }
-
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        long id_inventario = Long.parseLong(request.getParameter("id"));
-        Inventario inventario = getInventarioById(id_inventario);
+    private void mostrarFormulario(HttpServletRequest request, HttpServletResponse response, Inventario inventario)
+            throws ServletException, IOException {
         request.setAttribute("inventario", inventario);
-        request.getRequestDispatcher("/WEB-INF/views/inventario-form.jsp").forward(request, response);
-    }
 
-    private Inventario getInventarioById(long id_inventario) {
-        Inventario inventario = null;
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM inventario WHERE id_inventario = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setLong(1, id_inventario);
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        inventario = new Inventario(
-                                resultSet.getLong("id_inventario"),
-                                resultSet.getInt("cantidad"),
-                                resultSet.getDouble("precio"),
-                                resultSet.getString("fecha_ingreso"),
-                                resultSet.getString("hora_ingreso"),
-                                resultSet.getString("fecha_salida"),
-                                resultSet.getString("hora_salida"),
-                                resultSet.getLong("id_producto"),
-                                resultSet.getString("nombre"),
-                                resultSet.getString("descripcion")
-                        );
-                    }
-                }
+        // Cargar productos
+        List<Producto> productos = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPass);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id_producto, nombre FROM productos");
+
+            while (rs.next()) {
+                Producto p = new Producto();
+                p.setId_producto(rs.getInt("id_producto"));
+                p.setNombre(rs.getString("nombre"));
+                productos.add(p);
             }
-        } catch (SQLException e) {
+
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return inventario;
+
+        request.setAttribute("productos", productos);
+        request.getRequestDispatcher("/WEB-INF/views/inventario-form.jsp").forward(request, response);
     }
 
-    private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/inventario-form.jsp").forward(request, response);
+    private void eliminarInventario(int id) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPass);
+            PreparedStatement ps = con.prepareStatement("DELETE FROM inventario WHERE id_inventario=?");
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            ps.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
-

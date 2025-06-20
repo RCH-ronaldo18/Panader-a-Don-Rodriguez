@@ -5,9 +5,9 @@ public class Usuario {
     private String correo_usuario; // Changed from nombre_usuario to correo_usuario
     private String contrasena;
     private int id_tipo_usuario;
- 
 
-    public Usuario(int id_usuario, String correo_usuario, String contrasena, int id_tipo_usuario) { // Updated constructor
+    public Usuario(int id_usuario, String correo_usuario, String contrasena, int id_tipo_usuario) { // Updated
+                                                                                                    // constructor
         this.id_usuario = id_usuario;
         this.correo_usuario = correo_usuario; // Updated parameter name
         this.contrasena = contrasena;

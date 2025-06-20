@@ -15,10 +15,9 @@ public class ClienteDAO {
     // Método para registrar un cliente en la base de datos
     public boolean registrarCliente(Cliente cliente) {
         String sql = "INSERT INTO clientes (nombre, direccion, telefono, id_usuario) VALUES (?, ?, ?, ?)";
-        
-        try (Connection conn = DatabaseConnection.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-             
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, cliente.getNombre());
             stmt.setString(2, cliente.getDireccion());
@@ -33,14 +32,13 @@ public class ClienteDAO {
         }
     }
 
-
     public static int contarClientes() {
-            int total = 0;
+        int total = 0;
         try (Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM clientes");
-            ResultSet rs = ps.executeQuery()) {
-        if (rs.next()) {
-            total = rs.getInt(1);
+                PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM clientes");
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                total = rs.getInt(1);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,5 +46,3 @@ public class ClienteDAO {
         return total;
     }
 }
-
- 

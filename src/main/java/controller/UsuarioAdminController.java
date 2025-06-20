@@ -24,7 +24,8 @@ public class UsuarioAdminController extends HttpServlet {
     private UsuarioAdminDAO usuarioAdminDAO = new UsuarioAdminDAO();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String action = request.getParameter("action");
 
         switch (action == null ? "listar" : action) {
@@ -44,7 +45,8 @@ public class UsuarioAdminController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String action = request.getParameter("action");
 
         switch (action == null ? "guardar" : action) {
@@ -59,7 +61,9 @@ public class UsuarioAdminController extends HttpServlet {
                 break;
         }
     }
-    private void editarUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    private void editarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
 
@@ -73,7 +77,8 @@ public class UsuarioAdminController extends HttpServlet {
                 return;
             }
 
-            // Pasar el usuario y el cliente a la vista para mostrarlos en el formulario de edición
+            // Pasar el usuario y el cliente a la vista para mostrarlos en el formulario de
+            // edición
             request.setAttribute("usuario", usuario);
             request.setAttribute("cliente", cliente);
             request.getRequestDispatcher("/WEB-INF/views/editarUsuario.jsp").forward(request, response);
@@ -89,32 +94,39 @@ public class UsuarioAdminController extends HttpServlet {
         }
     }
 
-    private void actualizarUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void actualizarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
-            int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));  // Obtener el ID del usuario desde el formulario
+            int idUsuario = Integer.parseInt(request.getParameter("idUsuario")); // Obtener el ID del usuario desde el
+                                                                                 // formulario
 
             // Obtener los datos del formulario
             String correoUsuario = request.getParameter("correoUsuario");
-            String contrasena = request.getParameter("contrasena");  // Contraseña (puede estar vacía)
+            String contrasena = request.getParameter("contrasena"); // Contraseña (puede estar vacía)
             int idTipoUsuario = Integer.parseInt(request.getParameter("idTipoUsuario"));
 
             String nombreCliente = request.getParameter("nombre");
             String direccionCliente = request.getParameter("direccion");
             String telefonoCliente = request.getParameter("telefono");
 
-            // Obtener el usuario existente para mantener la contraseña si no se proporciona una nueva
+            // Obtener el usuario existente para mantener la contraseña si no se proporciona
+            // una nueva
             Usuario usuarioExistente = usuarioAdminDAO.obtenerUsuarioPorId(idUsuario);
 
             // Si no se proporciona una nueva contraseña, mantenemos la actual
             if (contrasena == null || contrasena.isEmpty()) {
-                contrasena = usuarioExistente.getContrasena();  // Mantener la contraseña actual
+                contrasena = usuarioExistente.getContrasena(); // Mantener la contraseña actual
             } else {
-                contrasena = encriptarContrasena(contrasena);  // Encriptar la nueva contraseña
+                contrasena = encriptarContrasena(contrasena); // Encriptar la nueva contraseña
             }
 
             // Crear las entidades Usuario y Cliente
             Usuario usuario = new Usuario(idUsuario, correoUsuario, contrasena, idTipoUsuario);
-            Cliente cliente = new Cliente(0, nombreCliente, direccionCliente, telefonoCliente, idUsuario);  // El idCliente se maneja por la relación
+            Cliente cliente = new Cliente(0, nombreCliente, direccionCliente, telefonoCliente, idUsuario); // El
+                                                                                                           // idCliente
+                                                                                                           // se maneja
+                                                                                                           // por la
+                                                                                                           // relación
 
             // Actualizar los datos en la base de datos
             if (usuarioAdminDAO.actualizarUsuarioYCliente(usuario, cliente)) {
@@ -135,8 +147,8 @@ public class UsuarioAdminController extends HttpServlet {
         }
     }
 
-
-    private void listarUsuariosConClientes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void listarUsuariosConClientes(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             List<UsuarioCliente> usuariosClientes = usuarioAdminDAO.listarUsuariosConClientes();
             request.setAttribute("usuariosClientes", usuariosClientes);
@@ -148,7 +160,8 @@ public class UsuarioAdminController extends HttpServlet {
         }
     }
 
-    private void guardarUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void guardarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String correoUsuario = request.getParameter("correoUsuario");
         String contrasena = request.getParameter("contrasena");
         String nombre = request.getParameter("nombre");
@@ -156,12 +169,12 @@ public class UsuarioAdminController extends HttpServlet {
         String telefono = request.getParameter("telefono");
         int idTipoUsuario = Integer.parseInt(request.getParameter("idTipoUsuario"));
 
-        if (correoUsuario == null || correoUsuario.isEmpty() || 
-            contrasena == null || contrasena.isEmpty() || 
-            nombre == null || nombre.isEmpty() || 
-            direccion == null || direccion.isEmpty() || 
-            telefono == null || telefono.isEmpty()) {
-            
+        if (correoUsuario == null || correoUsuario.isEmpty() ||
+                contrasena == null || contrasena.isEmpty() ||
+                nombre == null || nombre.isEmpty() ||
+                direccion == null || direccion.isEmpty() ||
+                telefono == null || telefono.isEmpty()) {
+
             request.setAttribute("error", "Todos los campos son obligatorios.");
             request.getRequestDispatcher("/WEB-INF/views/nuevoUsuario.jsp").forward(request, response);
             return;
@@ -201,11 +214,11 @@ public class UsuarioAdminController extends HttpServlet {
         }
     }
 
-
-//metodo de controlador para eliminar usuario y cliente 
-    private void eliminarUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    // metodo de controlador para eliminar usuario y cliente
+    private void eliminarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        
+
         try {
             // Validar que el parámetro 'id' no sea nulo ni vacío
             if (idParam == null || idParam.isEmpty()) {
@@ -218,9 +231,9 @@ public class UsuarioAdminController extends HttpServlet {
             boolean eliminado = usuarioAdminDAO.eliminarUsuario(idUsuario);
 
             if (eliminado) {
-	                // Redirigir a la lista de usuarios si se elimina correctamente
+                // Redirigir a la lista de usuarios si se elimina correctamente
                 response.sendRedirect(request.getContextPath() + "/usuarios");
-            } else { 
+            } else {
                 // Mostrar mensaje de error si la eliminación falla
                 request.setAttribute("error", "No se pudo eliminar el usuario.");
                 request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
@@ -235,7 +248,6 @@ public class UsuarioAdminController extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
         }
     }
-
 
     private String encriptarContrasena(String contrasena) {
         try {

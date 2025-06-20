@@ -12,34 +12,33 @@ import model.Venta;
 
 public class VentaDAO {
 
-	public long registrarVenta(Venta venta) throws SQLException {
-	    String sql = "INSERT INTO ventas (id_cliente, fecha_venta, hora_venta, total, id_estado) VALUES (?, ?, ?, ?, ?)";
-	    try (Connection con = DatabaseConnection.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    public long registrarVenta(Venta venta) throws SQLException {
+        String sql = "INSERT INTO ventas (id_cliente, fecha_venta, hora_venta, total, id_estado) VALUES (?, ?, ?, ?, ?)";
+        try (Connection con = DatabaseConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-	        ps.setLong(1, venta.getIdCliente());
-	        ps.setDate(2, java.sql.Date.valueOf(venta.getFechaVenta())); 
-	        ps.setTime(3, java.sql.Time.valueOf(venta.getHoraVenta())); 
-	        ps.setDouble(4, venta.getTotal());
-	        ps.setInt(5, venta.getIdEstado());  // Aquí registras el id_estado
+            ps.setLong(1, venta.getIdCliente());
+            ps.setDate(2, java.sql.Date.valueOf(venta.getFechaVenta()));
+            ps.setTime(3, java.sql.Time.valueOf(venta.getHoraVenta()));
+            ps.setDouble(4, venta.getTotal());
+            ps.setInt(5, venta.getIdEstado()); // Aquí registras el id_estado
 
-	        ps.executeUpdate();
+            ps.executeUpdate();
 
-	        try (ResultSet rs = ps.getGeneratedKeys()) {
-	            if (rs.next()) {
-	                return rs.getLong(1); // Retornar el ID generado
-	            }
-	        }
-	    }
-	    return -1;
-	}
-
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getLong(1); // Retornar el ID generado
+                }
+            }
+        }
+        return -1;
+    }
 
     // Registrar cada detalle de la venta
     public void registrarDetalleVenta(DetalleVenta detalle, long idVenta) throws SQLException {
         String sql = "INSERT INTO detalles_venta (id_venta, id_producto, cantidad, precio_unitario, subtotal, igv, total) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setLong(1, idVenta);
             ps.setLong(2, detalle.getIdProducto());
@@ -55,31 +54,59 @@ public class VentaDAO {
 
     // Actualizar el inventario reduciendo el stock
     public boolean actualizarInventario(long idProducto, int cantidadVendida) throws SQLException {
-        String sql = "UPDATE inventario SET cantidad = cantidad - ? WHERE id_producto = ? AND cantidad >= ?";
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sqlSelect = "SELECT id_inventario, cantidad FROM inventario WHERE id_producto = ? AND cantidad >= ?";
+        String sqlUpdate = "UPDATE inventario SET cantidad = cantidad - ? WHERE id_inventario = ?";
+        String sqlInsert = "INSERT INTO movimiento_producto (id_inventario, fecha, detalle, entrada, salida) VALUES (?, ?, ?, ?, ?)";
 
-            ps.setInt(1, cantidadVendida);
-            ps.setLong(2, idProducto);
-            ps.setInt(3, cantidadVendida); // Verificar que hay stock suficiente
+        try (Connection con = DatabaseConnection.getConnection()) {
+            int idInventario = -1;
 
-            int filasActualizadas = ps.executeUpdate();
+            // 1. Obtener el id_inventario si hay stock suficiente
+            try (PreparedStatement psSelect = con.prepareStatement(sqlSelect)) {
+                psSelect.setLong(1, idProducto);
+                psSelect.setInt(2, cantidadVendida);
+                ResultSet rs = psSelect.executeQuery();
 
-            if (filasActualizadas == 0) {
-                // No hay suficiente stock
-                return false;  // Retorna 'false' si no se actualizó el inventario
+                if (rs.next()) {
+                    idInventario = rs.getInt("id_inventario");
+                } else {
+                    return false; // No hay stock suficiente o producto no encontrado
+                }
             }
 
-            return true;  // Retorna 'true' si se actualizó correctamente
+            // 2. Actualizar el inventario
+            int filasActualizadas = 0;
+            try (PreparedStatement psUpdate = con.prepareStatement(sqlUpdate)) {
+                psUpdate.setInt(1, cantidadVendida);
+                psUpdate.setInt(2, idInventario);
+                filasActualizadas = psUpdate.executeUpdate();
+            }
+
+            if (filasActualizadas == 0) {
+                return false; // No se pudo actualizar (por ejemplo, otro proceso ya lo actualizó)
+            }
+
+            // 3. Registrar el movimiento
+            try (PreparedStatement psInsert = con.prepareStatement(sqlInsert)) {
+                psInsert.setInt(1, idInventario);
+                psInsert.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
+                psInsert.setString(3, "VENTA");
+                psInsert.setInt(4, 0); // No es una entrada
+                psInsert.setInt(5, cantidadVendida); // Es una salida
+                psInsert.executeUpdate();
+            }
+
+            return true;
         }
     }
- // Obtener la cantidad disponible de un producto
+
+    // Obtener la cantidad disponible de un producto
     public int obtenerCantidadDisponible(long idProducto) throws SQLException {
         String sql = "SELECT cantidad FROM inventario WHERE id_producto = ?";
         int cantidadDisponible = 0;
 
         try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setLong(1, idProducto);
             try (ResultSet rs = ps.executeQuery()) {
@@ -102,7 +129,8 @@ public class VentaDAO {
                     registrarDetalleVenta(detalle, idVenta); // Registrar cada detalle
 
                     // Intentar actualizar el inventario
-                    boolean inventarioActualizado = actualizarInventario(detalle.getIdProducto(), detalle.getCantidad());
+                    boolean inventarioActualizado = actualizarInventario(detalle.getIdProducto(),
+                            detalle.getCantidad());
                     if (!inventarioActualizado) {
                         throw new SQLException("No hay suficiente stock para el producto : ");
                     }
@@ -117,15 +145,14 @@ public class VentaDAO {
         }
     }
 
-
     // Obtener ventas por cliente
     public List<Venta> obtenerVentasPorCliente(int idCliente) throws SQLException {
         String sql = "SELECT * FROM ventas WHERE id_cliente = ?";
         List<Venta> ventas = new ArrayList<>();
 
         try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-System.out.println(idCliente);
+                PreparedStatement ps = con.prepareStatement(sql)) {
+            System.out.println(idCliente);
             ps.setLong(1, idCliente);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -148,7 +175,7 @@ System.out.println(idCliente);
         Venta venta = null;
 
         try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setLong(1, idVenta);
             try (ResultSet rs = ps.executeQuery()) {
@@ -162,37 +189,37 @@ System.out.println(idCliente);
                 }
             }
         }
-        return venta; 
+        return venta;
     }
 
     // Obtener detalles de una venta por su ID
     public List<DetalleVenta> obtenerDetallesVenta(long idVenta) throws SQLException {
         String sql = """
-            SELECT 
-                dv.id_producto, 
-                p.nombre AS nombre_producto, 
-                dv.cantidad, 
-                dv.precio_unitario, 
-                dv.subtotal, 
-                dv.igv, 
-                dv.total,
-                c.nombre AS nombre_cliente -- Agregamos el nombre del cliente
-            FROM 
-                detalles_venta dv
-            INNER JOIN 
-                productos p ON dv.id_producto = p.id_producto
-            INNER JOIN 
-                ventas v ON dv.id_venta = v.id_venta -- Relación con la tabla ventas
-            INNER JOIN 
-                clientes c ON v.id_cliente = c.id_cliente -- Relación con la tabla clientes
-            WHERE 
-                dv.id_venta = ?;
-        """;
+                    SELECT
+                        dv.id_producto,
+                        p.nombre AS nombre_producto,
+                        dv.cantidad,
+                        dv.precio_unitario,
+                        dv.subtotal,
+                        dv.igv,
+                        dv.total,
+                        c.nombre AS nombre_cliente -- Agregamos el nombre del cliente
+                    FROM
+                        detalles_venta dv
+                    INNER JOIN
+                        productos p ON dv.id_producto = p.id_producto
+                    INNER JOIN
+                        ventas v ON dv.id_venta = v.id_venta -- Relación con la tabla ventas
+                    INNER JOIN
+                        clientes c ON v.id_cliente = c.id_cliente -- Relación con la tabla clientes
+                    WHERE
+                        dv.id_venta = ?;
+                """;
 
         List<DetalleVenta> detalles = new ArrayList<>();
 
         try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setLong(1, idVenta);
             try (ResultSet rs = ps.executeQuery()) {
@@ -213,69 +240,65 @@ System.out.println(idCliente);
         return detalles;
     }
 
- // Obtener todas las ventas
-public List<Venta> obtenerTodasLasVentas() throws SQLException {
-    String sql = """
-        SELECT 
-            v.*, 
-            c.nombre AS nombre_cliente
-        FROM 
-            ventas v
-        JOIN 
-            clientes c ON v.id_cliente = c.id_cliente
-    """;
+    // Obtener todas las ventas
+    public List<Venta> obtenerTodasLasVentas() throws SQLException {
+        String sql = """
+                    SELECT
+                        v.*,
+                        c.nombre AS nombre_cliente
+                    FROM
+                        ventas v
+                    JOIN
+                        clientes c ON v.id_cliente = c.id_cliente
+                """;
 
-    List<Venta> ventas = new ArrayList<>();
-
-    try (Connection con = DatabaseConnection.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Venta venta = new Venta();
-                venta.setIdVenta(rs.getLong("id_venta"));
-                venta.setIdCliente(rs.getLong("id_cliente"));
-                venta.setFechaVenta(rs.getDate("fecha_venta").toLocalDate());
-                venta.setHoraVenta(rs.getTime("hora_venta").toLocalTime());
-                venta.setTotal(rs.getDouble("total"));
-                venta.setIdEstado(rs.getInt("id_estado"));
-                venta.setNombreCliente(rs.getString("nombre_cliente")); // Aquí sí funcionará
-                ventas.add(venta);
-            }
-        }
-    }
-    return ventas;
-}
-
-    //ACTUALIZAR ESTADO DE LA VENTA :
-    public boolean actualizarEstado(long idVenta, int nuevoEstado) throws SQLException {
-        
-        String sql = "UPDATE ventas SET id_estado = ? WHERE id_venta = ?";
-        
-     
+        List<Venta> ventas = new ArrayList<>();
 
         try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Venta venta = new Venta();
+                    venta.setIdVenta(rs.getLong("id_venta"));
+                    venta.setIdCliente(rs.getLong("id_cliente"));
+                    venta.setFechaVenta(rs.getDate("fecha_venta").toLocalDate());
+                    venta.setHoraVenta(rs.getTime("hora_venta").toLocalTime());
+                    venta.setTotal(rs.getDouble("total"));
+                    venta.setIdEstado(rs.getInt("id_estado"));
+                    venta.setNombreCliente(rs.getString("nombre_cliente")); // Aquí sí funcionará
+                    ventas.add(venta);
+                }
+            }
+        }
+        return ventas;
+    }
+
+    // ACTUALIZAR ESTADO DE LA VENTA :
+    public boolean actualizarEstado(long idVenta, int nuevoEstado) throws SQLException {
+
+        String sql = "UPDATE ventas SET id_estado = ? WHERE id_venta = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, nuevoEstado);
             ps.setLong(2, idVenta);
             System.out.println("hh");
 
-
             int filasAfectadas = ps.executeUpdate();
 
-               System.out.println("estoy en el dao");
+            System.out.println("estoy en el dao");
             return filasAfectadas > 0;
         }
     }
 
-
     public static int contarVentas() {
         int total = 0;
         try (Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM ventas");
-            ResultSet rs = ps.executeQuery()) {
-        if (rs.next()) {
-            total = rs.getInt(1);
+                PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM ventas");
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                total = rs.getInt(1);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -283,5 +306,3 @@ public List<Venta> obtenerTodasLasVentas() throws SQLException {
         return total;
     }
 }
-
-  
