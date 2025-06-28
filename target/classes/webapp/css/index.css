@@ -1,0 +1,130 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+:root{
+    --primary-color: #7ab9c7;
+    --primary-background-color: #7ab9c7;
+}
+/*HEADER TOP*/
+   .container-soporte{
+       display: flex;
+       align-items: center;
+       gap: 2rem;
+       padding: 10px 0px;
+   }
+   .content-soporte{
+       display: flex;
+       flex-direction: column;
+   }
+   .img-logo{
+       display: flex;
+       justify-content: center;
+       align-items: center;
+   }
+   .fa-location-dot,
+   .fa-user{
+    color: var(--primary-color);
+    font-size: 1.7rem;
+   }
+/*NAVBAR*/
+.navbar{
+    position: sticky;
+    top: 0;
+    background-color: var(--primary-color);
+    z-index: 1030;
+    background-color: #7ab9c7;
+}
+.nav-link{
+   color: black; 
+   font-size: 20px;
+   font-weight: 500;
+   text-transform: uppercase;
+}
+.dropdown-menu{
+    background-color: #7ab9c7;
+}
+.dropdown-menu a{
+    color: black;
+}
+.fa-cart-shopping{
+    font-size: 1.7rem;
+    padding-left: 10px;
+    margin-left: 10px;
+    color: #000;
+}
+/*TARJETAS*/
+.fa-truck,
+.fa-mobile-screen,
+.fa-gift,
+.fa-clock{
+    color: var(--primary-color);
+    font-size: 1.7rem;
+}
+.container-tarjeta{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+.content-tarjeta{
+    display: flex;
+    flex-direction: column;
+}
+.content-tarjeta span{
+    text-align: center;
+}
+.shadow{
+    padding: 15px;
+}
+/**/
+h1{
+    color: black;
+}
+p{
+    color: black;
+}
+/*CARD DE TALLER*/
+h5{
+text-align: center;  
+padding: 10px 0px;
+}
+
+/*FOOTER*/
+.footer{
+    background-color: var(--primary-color);
+}
+p ,a{
+    text-decoration: none;
+}
+h2{
+    text-align: center;
+}
+/*CONTACTO*/
+.form-floating input,
+.form-floating textarea{
+    background-color: #dddddd;
+}
+/*PRODUCTOS*/
+.btn-productos{
+	background-color: #7ab9c7;
+	color:black;
+}
+/* */
+.col-md-3{
+background-color: #7ab9c7;
+}
+.sidebar{
+	background-color: #7ab9c7;
+}
+/*LOGIN*/
+.btn-login{
+	background-color: #7ab9c7 !important;
+}
+/*PRODUCTOS*/
+#categoria {
+    cursor: pointer;
+}
+#categoria {
+    cursor: pointer;
+}

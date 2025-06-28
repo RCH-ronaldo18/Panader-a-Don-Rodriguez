@@ -25,7 +25,7 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/inventario">Inventario</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/movimientos">Movimientos</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/movimientos">Movimiento Kardex</a>
                     </li>
                     <li class="nav-item">
                         <a href="${pageContext.request.contextPath}/reporte-ventas" class="nav-link">Reporte Ventas
@@ -33,7 +33,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="${pageContext.request.contextPath}/reporte-movimientos" class="nav-link">Reporte
-                            Movimientos (Excel)</a>
+                            Kardex (Excel)</a>
                     </li>
 
 

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/movimientos")
 public class MovimientoController extends HttpServlet {
@@ -52,11 +53,20 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         request.getRequestDispatcher("/WEB-INF/views/movimiento-form.jsp").forward(request, response);
     } else {
         List<Movimiento> listaMovimientos = new ArrayList<>();
+        Map<Integer, Integer> existenciasActuales = new java.util.HashMap<>();
 
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT id_movimiento, id_inventario, fecha, detalle, entrada, salida FROM movimiento_producto ORDER BY fecha DESC";
+
+            // Obtener movimientos con datos del producto
+            String sql = "SELECT mp.id_movimiento, mp.id_inventario, mp.fecha, mp.detalle, mp.entrada, mp.salida, " +
+                         "p.nombre AS nombre_producto, p.precio AS precio_unitario " +
+                         "FROM movimiento_producto mp " +
+                         "JOIN inventario i ON mp.id_inventario = i.id_inventario " +
+                         "JOIN productos p ON i.id_producto = p.id_producto " +
+                         "ORDER BY mp.fecha ASC, mp.id_movimiento ASC";
+
             try (PreparedStatement stmt = conn.prepareStatement(sql);
-                    ResultSet rs = stmt.executeQuery()) {
+                 ResultSet rs = stmt.executeQuery()) {
 
                 while (rs.next()) {
                     Movimiento m = new Movimiento();
@@ -66,17 +76,38 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
                     m.setDetalle(rs.getString("detalle"));
                     m.setEntrada(rs.getInt("entrada"));
                     m.setSalida(rs.getInt("salida"));
+                    m.setNombreProducto(rs.getString("nombre_producto"));
+                    m.setCostoUnitario(rs.getDouble("precio_unitario"));
+
+                    int cantidad = rs.getInt("entrada") > 0 ? rs.getInt("entrada") : rs.getInt("salida");
+                    m.setTotalMovimiento(cantidad * rs.getDouble("precio_unitario"));
+
                     listaMovimientos.add(m);
                 }
             }
+
+            // Obtener existencias actuales por id_inventario
+            String sqlStock = "SELECT id_inventario, cantidad FROM inventario";
+            try (PreparedStatement stmtStock = conn.prepareStatement(sqlStock);
+                 ResultSet rsStock = stmtStock.executeQuery()) {
+
+                while (rsStock.next()) {
+                    int idInventario = rsStock.getInt("id_inventario");
+                    int cantidadActual = rsStock.getInt("cantidad");
+                    existenciasActuales.put(idInventario, cantidadActual);
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         request.setAttribute("listaMovimientos", listaMovimientos);
+        request.setAttribute("existenciasActuales", existenciasActuales); // importante
         request.getRequestDispatcher("/WEB-INF/views/movimientos.jsp").forward(request, response);
     }
 }
+
 
 
     @Override

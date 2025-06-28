@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+  <!-- Servlets con URLs limpias y en minúsculas con guiones -->
+
+  <servlet>
+    <servlet-name>ActualizarEstadoVentaController</servlet-name>
+    <servlet-class>controller.ActualizarEstadoVentaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ActualizarEstadoVentaController</servlet-name>
+    <url-pattern>/actualizarEstadoVenta</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AgregarCarritoController</servlet-name>
+    <servlet-class>controller.AgregarCarritoController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AgregarCarritoController</servlet-name>
+    <url-pattern>/agregar-carrito</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CarritoController</servlet-name>
+    <servlet-class>controller.CarritoController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CarritoController</servlet-name>
+    <url-pattern>/carrito</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DesayunoController</servlet-name>
+    <servlet-class>controller.DesayunoController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DesayunoController</servlet-name>
+    <url-pattern>/desayuno</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DetalleVentaController</servlet-name>
+    <servlet-class>controller.DetalleVentaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DetalleVentaController</servlet-name>
+    <url-pattern>/verDetallesVenta</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>InicioController</servlet-name>
+    <servlet-class>controller.InicioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InicioController</servlet-name>
+    <url-pattern>/inicio</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>InventarioController</servlet-name>
+    <servlet-class>controller.InventarioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InventarioController</servlet-name>
+    <url-pattern>/inventario</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>MovimientoController</servlet-name>
+    <servlet-class>controller.MovimientoController</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>MovimientoController</servlet-name>
+    <url-pattern>/movimientos</url-pattern>
+</servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>LoginController</servlet-name>
+    <servlet-class>controller.LoginController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginController</servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>MiniDulcesController</servlet-name>
+    <servlet-class>controller.MiniDulcesController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MiniDulcesController</servlet-name>
+    <url-pattern>/mini-dulces</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>MiniTortas</servlet-name>
+    <servlet-class>controller.MiniTortas</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MiniTortas</servlet-name>
+    <url-pattern>/mini-tortas</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>PostresController</servlet-name>
+    <servlet-class>controller.PostresController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PostresController</servlet-name>
+    <url-pattern>/postres</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProductoController</servlet-name>
+    <servlet-class>controller.ProductoController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProductoController</servlet-name>
+    <url-pattern>/productos</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RegistrarVentaController</servlet-name>
+    <servlet-class>controller.RegistrarVentaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistrarVentaController</servlet-name>
+    <url-pattern>/registrarVenta</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RegistroUsuarioAdminController</servlet-name>
+    <servlet-class>controller.RegistroUsuarioAdminController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistroUsuarioAdminController</servlet-name>
+    <url-pattern>/registro-usuario-admin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RegistroUsuarioController</servlet-name>
+    <servlet-class>controller.RegistroUsuarioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistroUsuarioController</servlet-name>
+    <url-pattern>/registro</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UsuarioAdminController</servlet-name>
+    <servlet-class>controller.UsuarioAdminController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UsuarioAdminController</servlet-name>
+    <url-pattern>/usuarios</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>VentasController</servlet-name>
+    <servlet-class>controller.VentaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VentasController</servlet-name>
+    <url-pattern>/ventas</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>VerCarritoServlet</servlet-name>
+    <servlet-class>controller.VerCarritoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VerCarritoServlet</servlet-name>
+    <url-pattern>/ver-carrito</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>VerComprasController</servlet-name>
+    <servlet-class>controller.VerComprasController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VerComprasController</servlet-name>
+    <url-pattern>/verCompras</url-pattern>
+  </servlet-mapping>
+
+  <!-- Dashboard panel admin -->
+  <servlet>
+    <servlet-name>DashboardServlet</servlet-name>
+    <servlet-class>controller.DashboardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DashboardServlet</servlet-name>
+    <url-pattern>/dashboard</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ExportarVentasExcelServlet</servlet-name>
+    <servlet-class>controller.ExportarVentasExcelServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ExportarVentasExcelServlet</servlet-name>
+    <url-pattern>/reporte-ventas</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <servlet-name>ExportarMovimientoExcelServlet</servlet-name>
+    <servlet-class>controller.ExportarMovimientoExcelServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ExportarMovimientoExcelServlet</servlet-name>
+    <url-pattern>/reporte-movimientos</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <servlet-name>CerrarSesionServlet</servlet-name>
+    <servlet-class>controller.CerrarSesionServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>CerrarSesionServlet</servlet-name>
+    <url-pattern>/cerrarSesion</url-pattern>
+</servlet-mapping>
+
+
+
+  <!-- Página de inicio -->
+  <welcome-file-list>
+    <welcome-file>inicio</welcome-file>
+  </welcome-file-list>
+
+</web-app>
